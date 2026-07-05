@@ -7,28 +7,34 @@
 
 .search-icon {
   position: absolute;
-  left: 12px;
-  color: var(--text-muted);
+  left: var(--space-12);
+  color: var(--text-secondary);
   pointer-events: none;
 }
 
 .search-input {
+  padding-left: var(--space-36); /* custom offset for icon */
+  padding-right: var(--space-36);
+  height: 42px;
+}
+
+/* Specific custom offset */
+.search-input.input {
   padding-left: 36px;
   padding-right: 36px;
-  height: 42px;
 }
 
 .search-clear-btn {
   position: absolute;
-  right: 12px;
+  right: var(--space-12);
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: var(--space-4);
   border-radius: 50%;
   transition: var(--transition);
 }
