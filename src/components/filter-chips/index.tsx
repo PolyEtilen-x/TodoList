@@ -1,4 +1,5 @@
 import React from 'react';
+import './style.css';
 
 interface FilterChipsProps {
   value: 'all' | 'pending' | 'completed';
