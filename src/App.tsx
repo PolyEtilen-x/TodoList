@@ -9,7 +9,7 @@ import {
 import type { Todo } from './types/todo';
 import { StatsSummary } from './components/StatsSummary';
 import { SearchBar } from './components/SearchBar';
-import { FilterChips } from './components/FilterChips';
+import { FilterChips } from './components/filter-chips';
 import { TodoForm } from './components/TodoForm';
 import { TodoItem } from './components/TodoItem';
 import { SkeletonList } from './components/SkeletonList';
