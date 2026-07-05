@@ -10,7 +10,7 @@ import type { Todo } from './types/todo';
 import { StatsSummary } from './components/stats-summary';
 import { SearchBar } from './components/search-bar';
 import { FilterChips } from './components/filter-chips';
-import { TodoForm } from './components/TodoForm';
+import { TodoForm } from './components/todo-form';
 import { TodoItem } from './components/TodoItem';
 import { SkeletonList } from './components/SkeletonList';
 import { 

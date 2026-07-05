@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import type { Todo } from '../types/todo';
+import type { Todo } from '../../types/todo';
 import { Check, X } from 'lucide-react';
+import './style.css';
 
 interface TodoFormProps {
   initialTodo?: Todo | null;
