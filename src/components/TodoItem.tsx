@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { Todo } from '../types/todo';
-import { Edit, Trash2, Calendar, Check } from 'lucide-react';
+import { Edit, Trash2, Calendar, Check, MoreHorizontal } from 'lucide-react';
 import { getRelativeTime } from '../utils/time';
 
 interface TodoItemProps {
@@ -11,6 +11,25 @@ interface TodoItemProps {
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDelete }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    if (menuOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+    
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [menuOpen]);
+
   return (
     <div className={`card todo-item ${todo.completed ? 'is-completed' : ''}`}>
       <div className="todo-item-main">
@@ -44,25 +63,42 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDe
         </div>
       </div>
 
-      <div className="todo-item-actions">
+      <div className="todo-item-actions" ref={menuRef}>
         <button
           type="button"
-          className="btn btn-secondary btn-icon-only"
-          onClick={() => onEdit(todo)}
-          title="Edit Task"
-          aria-label="Edit Task"
+          className="btn btn-secondary btn-icon-only menu-trigger"
+          onClick={() => setMenuOpen(!menuOpen)}
+          title="Actions Menu"
+          aria-label="Actions Menu"
+          aria-expanded={menuOpen}
         >
-          <Edit size={16} />
+          <MoreHorizontal size={18} />
         </button>
-        <button
-          type="button"
-          className="btn btn-danger btn-icon-only"
-          onClick={() => onDelete(todo.id)}
-          title="Delete Task"
-          aria-label="Delete Task"
-        >
-          <Trash2 size={16} />
-        </button>
+
+        {menuOpen && (
+          <div className="todo-menu-dropdown card">
+            <button
+              type="button"
+              className="menu-item"
+              onClick={() => {
+                onEdit(todo);
+                setMenuOpen(false);
+              }}
+            >
+              <Edit size={14} /> Edit Task
+            </button>
+            <button
+              type="button"
+              className="menu-item delete"
+              onClick={() => {
+                onDelete(todo.id);
+                setMenuOpen(false);
+              }}
+            >
+              <Trash2 size={14} /> Delete Task
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
