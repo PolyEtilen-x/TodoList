@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -9,10 +7,10 @@
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-app);
-  color: var(--text-primary);
+  color: var(--text-body);
   min-height: 100svh;
   line-height: 1.5;
-  transition: background-color 0.3s ease;
+  transition: var(--transition);
 }
 
 #root {
@@ -22,35 +20,53 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  padding: 2rem 1rem;
+  padding: var(--space-32) var(--space-16);
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-heading);
   color: var(--text-primary);
   font-weight: 700;
 }
 
-/* Custom premium elements */
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+h3 {
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+/* Premium Card Primitive */
 .card {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
+  padding: var(--space-24);
   box-shadow: var(--shadow-md);
   transition: var(--transition);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
-  border-color: var(--border-focus);
+  border-color: var(--border-hover);
 }
 
+/* Premium Button Primitives */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-8);
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: 0.875rem;
@@ -68,51 +84,48 @@ h1, h2, h3, h4 {
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
-  box-shadow: 0 4px 12px var(--primary-glow);
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
-  box-shadow: none;
 }
 
 .btn-secondary {
-  background-color: var(--bg-card);
+  background-color: transparent;
   border-color: var(--border);
   color: var(--text-primary);
 }
 
 .btn-secondary:hover {
-  background-color: var(--bg-hover);
-  border-color: var(--text-secondary);
+  background-color: #242429;
+  border-color: var(--border-hover);
 }
 
 .btn-danger {
-  background-color: hsla(0, 100%, 50%, 0.08);
-  border-color: hsla(0, 100%, 50%, 0.15);
-  color: hsl(0, 84%, 60%);
+  background-color: var(--danger);
+  border-color: transparent;
+  color: #ffffff;
 }
 
 .btn-danger:hover {
-  background-color: hsl(0, 84%, 60%);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  background-color: #dc2626;
 }
 
 .btn-icon-only {
-  padding: 0.5rem;
+  padding: var(--space-8);
   border-radius: var(--radius-sm);
   width: 32px;
   height: 32px;
 }
 
+/* Premium Input Primitive */
 .input {
   width: 100%;
   font-family: var(--font-sans);
   font-size: 0.875rem;
   padding: 0.625rem 0.875rem;
-  background-color: var(--bg-card);
+  background-color: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   color: var(--text-primary);
@@ -120,70 +133,74 @@ h1, h2, h3, h4 {
   transition: var(--transition);
 }
 
+.input::placeholder {
+  color: var(--text-disabled);
+}
+
 .input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 .input-error {
-  border-color: hsl(0, 84%, 60%);
+  border-color: var(--danger);
 }
 
 .input-error:focus {
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  border-color: var(--danger);
 }
 
+/* Reusable Badges */
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--space-4);
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.25rem 0.625rem;
+  padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-full);
 }
 
 .badge-pending {
-  background-color: var(--status-pending-bg);
-  color: var(--status-pending-text);
+  background-color: rgba(94, 106, 210, 0.18);
+  color: #7C89FF;
 }
 
 .badge-completed {
-  background-color: var(--status-completed-bg);
-  color: var(--status-completed-text);
+  background-color: rgba(34, 197, 94, 0.18);
+  color: #4ADE80;
 }
 
-/* Toast Alert UI */
+/* Toast Alerts */
 .toast-container {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: var(--space-24);
+  right: var(--space-24);
   z-index: 50;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-8);
   max-width: 320px;
 }
 
 .toast {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-12);
   background-color: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 0.875rem 1.125rem;
-  box-shadow: var(--shadow-lg);
-  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-shadow: var(--shadow-md);
+  animation: slideIn 250ms ease-out forwards;
   transition: var(--transition);
 }
 
 .toast-success {
-  border-left: 4px solid hsl(142, 76%, 45%);
+  border-left: 4px solid var(--success);
 }
 
 .toast-error {
-  border-left: 4px solid hsl(0, 84%, 60%);
+  border-left: 4px solid var(--danger);
 }
 
 @keyframes slideIn {
@@ -191,20 +208,19 @@ h1, h2, h3, h4 {
     opacity: 0;
     transform: translateY(12px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
 
-/* Skeleton Pulse Loading Utility */
+/* Skeleton loader helper */
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-hover) 25%,
-    var(--border) 37%,
-    var(--bg-hover) 63%
-  );
+  background: linear-gradient(90deg,
+      var(--bg-hover) 25%,
+      var(--border) 37%,
+      var(--bg-hover) 63%);
   background-size: 400% 100%;
   animation: skeleton-loading 1.4s ease infinite;
 }
@@ -213,12 +229,13 @@ h1, h2, h3, h4 {
   0% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
 }
 
-/* Dashboard Global Layouts */
+/* App Header Layout */
 .app-container {
   display: flex;
   flex-direction: column;
@@ -227,43 +244,46 @@ h1, h2, h3, h4 {
 
 .app-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-32);
 }
 
 .app-title {
   font-size: 2.75rem;
   font-weight: 800;
-  line-height: 1.1;
-  background: linear-gradient(135deg, var(--primary) 0%, hsl(280, 84%, 60%) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
 }
 
 .app-subtitle {
   font-size: 0.9375rem;
   color: var(--text-secondary);
-  margin-top: 0.5rem;
 }
 
+/* Control Bar (Surface Hierarchy) */
 .control-bar {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1.25rem;
-  margin-bottom: 1.5rem;
+  gap: var(--space-16);
+  padding: var(--space-16);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-24);
+  box-shadow: var(--shadow-sm);
 }
 
 .filter-sort-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-16);
   flex-wrap: wrap;
 }
 
 .sort-controls {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-8);
   align-items: center;
 }
 
@@ -276,7 +296,7 @@ h1, h2, h3, h4 {
 .select-icon {
   position: absolute;
   left: 10px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   pointer-events: none;
   z-index: 10;
 }
@@ -299,7 +319,6 @@ h1, h2, h3, h4 {
 
 .select-input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-glow);
 }
 
 .select-wrapper::after {
@@ -314,12 +333,13 @@ h1, h2, h3, h4 {
 
 /* Page Section States */
 .list-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-24);
 }
 
-.empty-state, .error-state {
+.empty-state,
+.error-state {
   text-align: center;
-  padding: 3.5rem 1.5rem;
+  padding: var(--space-48) var(--space-24);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -327,46 +347,48 @@ h1, h2, h3, h4 {
   color: var(--text-secondary);
 }
 
-.empty-state h3, .error-state h3 {
+.empty-state h3,
+.error-state h3 {
   font-size: 1.125rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-8);
   color: var(--text-primary);
 }
 
-.empty-state p, .error-state p {
+.empty-state p,
+.error-state p {
   font-size: 0.875rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   max-width: 280px;
 }
 
 .state-icon {
-  margin-bottom: 1rem;
-  color: var(--text-muted);
+  margin-bottom: var(--space-16);
+  color: var(--text-secondary);
 }
 
 .error-state .state-icon {
-  color: hsl(0, 84%, 60%);
+  color: var(--danger);
 }
 
 /* Task Groups & Collapsible Section Layout */
 .task-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--space-24);
 }
 
 .completed-group {
-  border-top: 1px dashed var(--border);
-  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-24);
 }
 
 .group-title {
   font-size: 0.8125rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
-  padding-left: 0.25rem;
+  margin-bottom: var(--space-12);
+  padding-left: var(--space-4);
 }
 
 .group-collapse-header {
@@ -377,9 +399,9 @@ h1, h2, h3, h4 {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.5rem 0.25rem;
-  margin-bottom: 0.75rem;
-  color: var(--text-muted);
+  padding: var(--space-8) var(--space-4);
+  margin-bottom: var(--space-12);
+  color: var(--text-secondary);
   transition: var(--transition);
   outline: none;
 }
@@ -398,10 +420,10 @@ h1, h2, h3, h4 {
 
 .empty-group-text {
   font-size: 0.8125rem;
-  color: var(--text-muted);
-  padding: 1.5rem;
+  color: var(--text-secondary);
+  padding: var(--space-24);
   text-align: center;
-  background-color: var(--bg-hover);
+  background-color: var(--bg-surface);
   border: 1px dashed var(--border);
   border-radius: var(--radius-md);
 }
@@ -411,9 +433,9 @@ h1, h2, h3, h4 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 2rem;
+  gap: var(--space-24);
+  margin-top: var(--space-24);
+  margin-bottom: var(--space-32);
 }
 
 .page-indicator {
