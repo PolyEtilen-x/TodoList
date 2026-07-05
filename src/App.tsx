@@ -76,7 +76,7 @@ function App() {
             addToast('Task updated successfully!', 'success');
             setEditingTodo(null);
           },
-          onError: (err: any) => {
+          onError: (err: Error) => {
             addToast(err.message || 'Failed to update task', 'error');
           },
         }
@@ -89,7 +89,7 @@ function App() {
             addToast('Task created successfully!', 'success');
             setPage(1); // Go to first page to see the new task
           },
-          onError: (err: any) => {
+          onError: (err: Error) => {
             addToast(err.message || 'Failed to create task', 'error');
           },
         }
@@ -107,7 +107,7 @@ function App() {
             'success'
           );
         },
-        onError: (err: any) => {
+        onError: (err: Error) => {
           addToast(err.message || 'Failed to toggle status', 'error');
         },
       }
@@ -124,7 +124,7 @@ function App() {
             setPage((p) => p - 1);
           }
         },
-        onError: (err: any) => {
+        onError: (err: Error) => {
           addToast(err.message || 'Failed to delete task', 'error');
         },
       });
@@ -189,7 +189,7 @@ function App() {
               <select
                 className="select-input"
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as 'createdAt' | 'updatedAt' | 'title')}
                 aria-label="Sort by field"
               >
                 <option value="createdAt">Created Time</option>
@@ -202,7 +202,7 @@ function App() {
               <select
                 className="select-input"
                 value={order}
-                onChange={(e) => setOrder(e.target.value as any)}
+                onChange={(e) => setOrder(e.target.value as 'asc' | 'desc')}
                 aria-label="Sort direction"
               >
                 <option value="desc">Descending</option>
