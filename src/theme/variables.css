@@ -39,6 +39,7 @@
   /* ========================================== */
   --bg-app: #0F0F11;
   --bg-surface: #17171A;
+  --bg-surface-secondary: #131316;
   --bg-card: #1F1F23;
   --border: #2C2C31;
   --border-hover: #3B3B42;
@@ -82,52 +83,56 @@
   --text-empty-desc: #A1A1AA;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    /* ========================================== */
-    /* COMPANION LIGHT MODE VALUES (Apple/Notion) */
-    /* ========================================== */
-    --bg-app: #F7F7F5;
-    --bg-surface: #FFFFFF;
-    --bg-card: #FFFFFF;
-    --border: #E4E4E7;
-    --border-hover: #D4D4D8;
+/* ========================================== */
+/* COMPANION LIGHT MODE VALUES (Apple/Notion) */
+/* ========================================== */
+:root[data-theme="light"] {
+  --bg-app: #F7F7F5;
+  --bg-surface: #FFFFFF;
+  --bg-surface-secondary: #EEEEEC;
+  --bg-card: #FFFFFF;
+  --border: #E4E4E7;
+  --border-hover: #D4D4D8;
 
-    /* Text Hierarchy */
-    --text-primary: #18181B;
-    --text-body: #3F3F46;
-    --text-secondary: #71717A;
-    --text-disabled: #A1A1AA;
-    
-    --primary: #5E6AD2;
-    --primary-hover: #6D78E8;
-    --primary-glow: rgba(94, 106, 210, 0.15);
-    
-    --success: #16A34A;
-    --warning: #D97706;
-    --danger: #DC2626;
+  /* Text Hierarchy */
+  --text-primary: #18181B;
+  --text-body: #3F3F46;
+  --text-secondary: #71717A;
+  --text-disabled: #A1A1AA;
+  
+  --primary: #5E6AD2;
+  --primary-hover: #6D78E8;
+  --primary-glow: rgba(94, 106, 210, 0.15);
+  
+  --success: #16A34A;
+  --warning: #D97706;
+  --danger: #DC2626;
 
-    /* Button Specifics */
-    --bg-btn-secondary: #FFFFFF;
-    --border-btn-secondary: #D4D4D8;
-    --bg-btn-secondary-hover: #FAFAFA;
-    
-    /* Input Specifics */
-    --bg-input: #FFFFFF;
-    --border-input: #D4D4D8;
-    
-    /* Todo Item hover */
-    --bg-todo-hover: #FAFAFA;
-    --border-todo-hover: #D4D4D8;
+  /* Button Specifics */
+  --bg-btn-secondary: #FFFFFF;
+  --border-btn-secondary: #D4D4D8;
+  --bg-btn-secondary-hover: #FAFAFA;
+  
+  /* Input Specifics */
+  --bg-input: #FFFFFF;
+  --border-input: #D4D4D8;
+  
+  /* Todo Item hover */
+  --bg-todo-hover: #FAFAFA;
+  --border-todo-hover: #D4D4D8;
 
-    /* Badges */
-    --bg-badge-pending: #EEF2FF;
-    --text-badge-pending: #4F46E5;
-    --bg-badge-completed: #DCFCE7;
-    --text-badge-completed: #15803D;
-    
-    /* Empty State Specifics */
-    --text-empty-title: #18181B;
-    --text-empty-desc: #71717A;
-  }
+  /* Badges */
+  --bg-badge-pending: #EEF2FF;
+  --text-badge-pending: #4F46E5;
+  --bg-badge-completed: #DCFCE7;
+  --text-badge-completed: #15803D;
+  
+  /* Empty State Specifics */
+  --text-empty-title: #18181B;
+  --text-empty-desc: #71717A;
+
+  /* Shadows - Rất nhẹ trong Light Mode */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 32px rgba(0, 0, 0, 0.08);
 }
