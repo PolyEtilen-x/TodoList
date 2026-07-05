@@ -4,29 +4,6 @@
   --font-sans: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
   --font-heading: 'Geist', var(--font-sans);
 
-  /* Color Palette - Premium Dark Theme (Inspired by Raycast / Linear) */
-  --bg-app: #0F0F11;
-  --bg-surface: #17171A;
-  --bg-card: #1F1F23;
-  --border: #2C2C31;
-  --border-hover: #3B3B42;
-
-  /* Text Hierarchy */
-  --text-primary: #F5F5F7;
-  --text-body: #E4E4E7;
-  --text-secondary: #A1A1AA;
-  --text-disabled: #71717A;
-  --text-muted: #71717A;
-
-  /* Accent Colors */
-  --primary: #5E6AD2;
-  --primary-hover: #6B76E6;
-  --primary-glow: rgba(94, 106, 210, 0.15);
-  
-  --success: #22C55E;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-
   /* Spacing - 8pt Grid System */
   --space-4: 4px;
   --space-8: 8px;
@@ -55,5 +32,102 @@
   --transition-dialog: all 250ms ease-out;
   --transition-collapse: all 300ms ease-out;
 
-  color-scheme: dark;
+  color-scheme: dark light;
+
+  /* ========================================== */
+  /* DEFAULT DARK MODE VALUES                  */
+  /* ========================================== */
+  --bg-app: #0F0F11;
+  --bg-surface: #17171A;
+  --bg-card: #1F1F23;
+  --border: #2C2C31;
+  --border-hover: #3B3B42;
+
+  /* Text Hierarchy */
+  --text-primary: #F5F5F7;
+  --text-body: #E4E4E7;
+  --text-secondary: #A1A1AA;
+  --text-disabled: #71717A;
+
+  /* Accent Colors */
+  --primary: #5E6AD2;
+  --primary-hover: #6D78E8;
+  --primary-glow: rgba(94, 106, 210, 0.15);
+  
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+  /* Button Specifics */
+  --bg-btn-secondary: #1F1F23;
+  --border-btn-secondary: #2C2C31;
+  --bg-btn-secondary-hover: #242429;
+  
+  /* Input Specifics */
+  --bg-input: #17171A;
+  --border-input: #2C2C31;
+  
+  /* Todo Item hover */
+  --bg-todo-hover: #242429;
+  --border-todo-hover: #3B3B42;
+
+  /* Badges */
+  --bg-badge-pending: rgba(94, 106, 210, 0.18);
+  --text-badge-pending: #7C89FF;
+  --bg-badge-completed: rgba(34, 197, 94, 0.18);
+  --text-badge-completed: #4ADE80;
+  
+  /* Empty State Specifics */
+  --text-empty-title: #F5F5F7;
+  --text-empty-desc: #A1A1AA;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /* ========================================== */
+    /* COMPANION LIGHT MODE VALUES (Apple/Notion) */
+    /* ========================================== */
+    --bg-app: #F7F7F5;
+    --bg-surface: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --border: #E4E4E7;
+    --border-hover: #D4D4D8;
+
+    /* Text Hierarchy */
+    --text-primary: #18181B;
+    --text-body: #3F3F46;
+    --text-secondary: #71717A;
+    --text-disabled: #A1A1AA;
+    
+    --primary: #5E6AD2;
+    --primary-hover: #6D78E8;
+    --primary-glow: rgba(94, 106, 210, 0.15);
+    
+    --success: #16A34A;
+    --warning: #D97706;
+    --danger: #DC2626;
+
+    /* Button Specifics */
+    --bg-btn-secondary: #FFFFFF;
+    --border-btn-secondary: #D4D4D8;
+    --bg-btn-secondary-hover: #FAFAFA;
+    
+    /* Input Specifics */
+    --bg-input: #FFFFFF;
+    --border-input: #D4D4D8;
+    
+    /* Todo Item hover */
+    --bg-todo-hover: #FAFAFA;
+    --border-todo-hover: #D4D4D8;
+
+    /* Badges */
+    --bg-badge-pending: #EEF2FF;
+    --text-badge-pending: #4F46E5;
+    --bg-badge-completed: #DCFCE7;
+    --text-badge-completed: #15803D;
+    
+    /* Empty State Specifics */
+    --text-empty-title: #18181B;
+    --text-empty-desc: #71717A;
+  }
 }

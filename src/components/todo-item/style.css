@@ -12,8 +12,8 @@
 }
 
 .todo-item:hover {
-  background-color: #242429;
-  border-color: #3B3B42;
+  background-color: var(--bg-todo-hover);
+  border-color: var(--border-todo-hover);
 }
 
 .todo-item.is-completed {
