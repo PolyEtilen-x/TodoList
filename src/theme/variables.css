@@ -1,0 +1,66 @@
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', var(--font-sans);
+  
+  /* Harmonious Color Palette - Indigo / Violet */
+  --primary: hsl(250, 84%, 54%);
+  --primary-hover: hsl(250, 84%, 48%);
+  --primary-light: hsl(250, 84%, 95%);
+  --primary-glow: hsla(250, 84%, 54%, 0.15);
+  
+  --bg-app: hsl(220, 20%, 97%);
+  --bg-card: hsl(0, 0%, 100%);
+  --bg-hover: hsl(220, 14%, 94%);
+  
+  --text-primary: hsl(224, 71%, 4%);
+  --text-secondary: hsl(220, 9%, 46%);
+  --text-muted: hsl(220, 9%, 60%);
+  
+  --border: hsl(220, 13%, 91%);
+  --border-focus: hsl(250, 84%, 75%);
+  
+  --status-pending-bg: hsl(35, 100%, 96%);
+  --status-pending-text: hsl(30, 93%, 47%);
+  --status-completed-bg: hsl(142, 70%, 95%);
+  --status-completed-text: hsl(142, 76%, 26%);
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+  --shadow-glow: 0 0 20px 0 rgba(99, 102, 241, 0.1);
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-app: hsl(224, 71%, 4%);
+    --bg-card: hsl(222, 47%, 7%);
+    --bg-hover: hsl(223, 47%, 11%);
+    
+    --text-primary: hsl(210, 40%, 98%);
+    --text-secondary: hsl(215, 20%, 65%);
+    --text-muted: hsl(215, 16%, 47%);
+    
+    --border: hsl(223, 47%, 13%);
+    --primary-light: hsl(250, 84%, 15%);
+    
+    --status-pending-bg: hsla(35, 100%, 50%, 0.1);
+    --status-pending-text: hsl(35, 100%, 65%);
+    --status-completed-bg: hsla(142, 70%, 50%, 0.1);
+    --status-completed-text: hsl(142, 70%, 55%);
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
+    
+    --border-focus: hsl(250, 84%, 40%);
+  }
+}
