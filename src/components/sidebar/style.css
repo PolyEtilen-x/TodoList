@@ -76,9 +76,11 @@
 
 .sidebar-header h3 {
   font-family: var(--font-heading);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .sidebar-content {
@@ -98,7 +100,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-8);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
@@ -109,10 +111,17 @@
   color: var(--text-secondary);
 }
 
+/* Segmented Control Toggle Layout */
 .settings-options {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  background-color: var(--bg-surface-secondary);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .option-btn {
@@ -121,26 +130,28 @@
   justify-content: center;
   gap: var(--space-8);
   width: 100%;
-  padding: var(--space-12);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background-color: var(--bg-card);
-  color: var(--text-body);
+  padding: var(--space-8) var(--space-12);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background-color: transparent;
+  color: var(--text-secondary);
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
   transition: var(--transition);
   text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .option-btn:hover {
-  background-color: var(--bg-todo-hover);
-  border-color: var(--border-hover);
+  color: var(--text-primary);
 }
 
 .option-btn.active {
-  background-color: var(--primary-glow);
-  border-color: var(--primary);
-  color: var(--primary-hover);
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
 }
