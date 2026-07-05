@@ -21,7 +21,7 @@ import {
   ArrowUpDown, 
   CheckCircle, 
   AlertCircle,
-  Settings
+  Menu
 } from 'lucide-react';
 
 interface Toast {
@@ -144,44 +144,46 @@ function App() {
   const totalPages = todosData?.data?.totalPages || 1;
 
   return (
-    <div className="app-container" style={{ position: 'relative' }}>
-      {/* Settings trigger */}
-      <button
-        type="button"
-        className="btn btn-secondary btn-icon-only settings-trigger"
-        onClick={() => setSidebarOpen(true)}
-        title={t('sidebarTitle')}
-        aria-label={t('sidebarTitle')}
-        style={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}
-      >
-        <Settings size={18} />
-      </button>
-
+    <div className="app-layout">
       {/* Settings Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Toast Notification Container */}
-      <div className="toast-container">
-        {toasts.map((toast) => (
-          <div
-            key={toast.id}
-            className={`toast ${toast.type === 'success' ? 'toast-success' : 'toast-error'}`}
+      <main className="main-content">
+        <div className="app-container">
+          {/* Mobile Settings Trigger (Hamburger Menu) */}
+          <button
+            type="button"
+            className="btn btn-secondary btn-icon-only settings-trigger"
+            onClick={() => setSidebarOpen(true)}
+            title={t('sidebarTitle')}
+            aria-label={t('sidebarTitle')}
+            style={{ position: 'absolute', top: 0, left: 0, zIndex: 10 }}
           >
-            {toast.type === 'success' ? (
-              <CheckCircle size={18} style={{ color: 'var(--success)' }} />
-            ) : (
-              <AlertCircle size={18} style={{ color: 'var(--danger)' }} />
-            )}
-            <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>{toast.message}</span>
-          </div>
-        ))}
-      </div>
+            <Menu size={18} />
+          </button>
 
-      {/* Dashboard Title Header */}
-      <header className="app-header">
-        <h1 className="app-title">{t('appTitle')}</h1>
-        <p className="app-subtitle">{t('appSubtitle')}</p>
-      </header>
+          {/* Toast Notification Container */}
+          <div className="toast-container">
+            {toasts.map((toast) => (
+              <div
+                key={toast.id}
+                className={`toast ${toast.type === 'success' ? 'toast-success' : 'toast-error'}`}
+              >
+                {toast.type === 'success' ? (
+                  <CheckCircle size={18} style={{ color: 'var(--success)' }} />
+                ) : (
+                  <AlertCircle size={18} style={{ color: 'var(--danger)' }} />
+                )}
+                <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>{toast.message}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Dashboard Title Header */}
+          <header className="app-header">
+            <h1 className="app-title">{t('appTitle')}</h1>
+            <p className="app-subtitle">{t('appSubtitle')}</p>
+          </header>
 
       {/* Stats Board */}
       <StatsSummary stats={statsData?.data} isLoading={isStatsLoading} />
@@ -343,6 +345,8 @@ function App() {
           </button>
         </div>
       )}
+    </div>
+      </main>
     </div>
   );
 }
