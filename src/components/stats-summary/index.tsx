@@ -1,6 +1,7 @@
 import React from 'react';
 import type { TodoStats } from '../../types/todo';
 import { CheckCircle2, Circle, ListTodo } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 import './style.css';
 
 interface StatsSummaryProps {
@@ -9,6 +10,8 @@ interface StatsSummaryProps {
 }
 
 export const StatsSummary: React.FC<StatsSummaryProps> = ({ stats, isLoading }) => {
+  const { t } = useApp();
+
   if (isLoading || !stats) {
     return (
       <div className="stats-grid">
@@ -26,7 +29,7 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ stats, isLoading }) 
           <ListTodo size={22} />
         </div>
         <div className="stats-info">
-          <p className="stats-label">Total Tasks</p>
+          <p className="stats-label">{t('totalTasks')}</p>
           <h3 className="stats-value">{stats.total}</h3>
         </div>
       </div>
@@ -36,7 +39,7 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ stats, isLoading }) 
           <Circle size={22} />
         </div>
         <div className="stats-info">
-          <p className="stats-label">Pending</p>
+          <p className="stats-label">{t('pending')}</p>
           <h3 className="stats-value">{stats.pending}</h3>
         </div>
       </div>
@@ -46,7 +49,7 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ stats, isLoading }) 
           <CheckCircle2 size={22} />
         </div>
         <div className="stats-info">
-          <p className="stats-label">Completed</p>
+          <p className="stats-label">{t('completed')}</p>
           <h3 className="stats-value">{stats.completed}</h3>
         </div>
       </div>

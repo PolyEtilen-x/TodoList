@@ -1,4 +1,5 @@
 import React from 'react';
+import { useApp } from '../../context/AppContext';
 import './style.css';
 
 interface FilterChipsProps {
@@ -7,10 +8,12 @@ interface FilterChipsProps {
 }
 
 export const FilterChips: React.FC<FilterChipsProps> = ({ value, onChange }) => {
+  const { t } = useApp();
+  
   const options: { label: string; val: 'all' | 'pending' | 'completed' }[] = [
-    { label: 'All Tasks', val: 'all' },
-    { label: 'Pending', val: 'pending' },
-    { label: 'Completed', val: 'completed' },
+    { label: t('allTasks'), val: 'all' },
+    { label: t('pending'), val: 'pending' },
+    { label: t('completed'), val: 'completed' },
   ];
 
   return (

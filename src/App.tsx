@@ -13,12 +13,15 @@ import { FilterChips } from './components/filter-chips';
 import { TodoForm } from './components/todo-form';
 import { TodoItem } from './components/todo-item';
 import { SkeletonList } from './components/skeleton-list';
+import { Sidebar } from './components/sidebar';
+import { useApp } from './context/AppContext';
 import { 
   ChevronDown, 
   ChevronUp, 
   ArrowUpDown, 
   CheckCircle, 
-  AlertCircle 
+  AlertCircle,
+  Settings
 } from 'lucide-react';
 
 interface Toast {
@@ -28,18 +31,21 @@ interface Toast {
 }
 
 function App() {
+  const { t, language } = useApp();
+
   // Query Filters & Pagination State
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<'all' | 'pending' | 'completed'>('all');
   const [sortBy, setSortBy] = useState<'createdAt' | 'updatedAt' | 'title'>('createdAt');
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState(1);
-  const limit = 5; // Compact page size for better view
+  const limit = 5;
 
   // UI state
   const [editingTodo, setEditingTodo] = useState<Todo | null>(null);
   const [completedCollapsed, setCompletedCollapsed] = useState(false);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // TanStack Queries & Mutations
   const { data: todosData, isLoading: isListLoading, isError: isListError, error: listError, refetch } = useTodosQuery({
@@ -73,11 +79,11 @@ function App() {
         { id: editingTodo.id, data: { title, description } },
         {
           onSuccess: () => {
-            addToast('Task updated successfully!', 'success');
+            addToast(t('toastUpdateSuccess'), 'success');
             setEditingTodo(null);
           },
           onError: (err: Error) => {
-            addToast(err.message || 'Failed to update task', 'error');
+            addToast(err.message || (language === 'vi' ? 'Cập nhật thất bại' : 'Failed to update task'), 'error');
           },
         }
       );
@@ -86,11 +92,11 @@ function App() {
         { title, description },
         {
           onSuccess: () => {
-            addToast('Task created successfully!', 'success');
-            setPage(1); // Go to first page to see the new task
+            addToast(t('toastCreateSuccess'), 'success');
+            setPage(1);
           },
           onError: (err: Error) => {
-            addToast(err.message || 'Failed to create task', 'error');
+            addToast(err.message || (language === 'vi' ? 'Tạo thất bại' : 'Failed to create task'), 'error');
           },
         }
       );
@@ -103,29 +109,28 @@ function App() {
       {
         onSuccess: () => {
           addToast(
-            completed ? 'Task marked as completed!' : 'Task set back to pending.',
+            completed ? t('toastToggleCompleted') : t('toastTogglePending'),
             'success'
           );
         },
         onError: (err: Error) => {
-          addToast(err.message || 'Failed to toggle status', 'error');
+          addToast(err.message || (language === 'vi' ? 'Cập nhật thất bại' : 'Failed to toggle status'), 'error');
         },
       }
     );
   };
 
   const handleDelete = async (id: string) => {
-    if (window.confirm('Are you sure you want to permanently delete this task?')) {
+    if (window.confirm(t('deleteConfirm'))) {
       await deleteMutation.mutateAsync(id, {
         onSuccess: () => {
-          addToast('Task deleted successfully!', 'success');
-          // If we deleted the last item on the page, go back a page
+          addToast(t('toastDeleteSuccess'), 'success');
           if (todosData?.data?.items.length === 1 && page > 1) {
             setPage((p) => p - 1);
           }
         },
         onError: (err: Error) => {
-          addToast(err.message || 'Failed to delete task', 'error');
+          addToast(err.message || (language === 'vi' ? 'Xóa thất bại' : 'Failed to delete task'), 'error');
         },
       });
     }
@@ -139,7 +144,22 @@ function App() {
   const totalPages = todosData?.data?.totalPages || 1;
 
   return (
-    <div className="app-container">
+    <div className="app-container" style={{ position: 'relative' }}>
+      {/* Settings trigger */}
+      <button
+        type="button"
+        className="btn btn-secondary btn-icon-only settings-trigger"
+        onClick={() => setSidebarOpen(true)}
+        title={t('sidebarTitle')}
+        aria-label={t('sidebarTitle')}
+        style={{ position: 'absolute', top: 0, right: 0, zIndex: 10 }}
+      >
+        <Settings size={18} />
+      </button>
+
+      {/* Settings Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
       {/* Toast Notification Container */}
       <div className="toast-container">
         {toasts.map((toast) => (
@@ -148,9 +168,9 @@ function App() {
             className={`toast ${toast.type === 'success' ? 'toast-success' : 'toast-error'}`}
           >
             {toast.type === 'success' ? (
-              <CheckCircle size={18} style={{ color: 'hsl(142, 76%, 36%)' }} />
+              <CheckCircle size={18} style={{ color: 'var(--success)' }} />
             ) : (
-              <AlertCircle size={18} style={{ color: 'hsl(0, 84%, 60%)' }} />
+              <AlertCircle size={18} style={{ color: 'var(--danger)' }} />
             )}
             <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>{toast.message}</span>
           </div>
@@ -159,8 +179,8 @@ function App() {
 
       {/* Dashboard Title Header */}
       <header className="app-header">
-        <h1 className="app-title">TaskSpace</h1>
-        <p className="app-subtitle">Organize and track your daily workflows with clarity.</p>
+        <h1 className="app-title">{t('appTitle')}</h1>
+        <p className="app-subtitle">{t('appSubtitle')}</p>
       </header>
 
       {/* Stats Board */}
@@ -192,9 +212,9 @@ function App() {
                 onChange={(e) => setSortBy(e.target.value as 'createdAt' | 'updatedAt' | 'title')}
                 aria-label="Sort by field"
               >
-                <option value="createdAt">Created Time</option>
-                <option value="updatedAt">Updated Time</option>
-                <option value="title">Title Alphabetical</option>
+                <option value="createdAt">{t('createdTime')}</option>
+                <option value="updatedAt">{t('updatedTime')}</option>
+                <option value="title">{t('titleAlphabetical')}</option>
               </select>
             </div>
 
@@ -205,8 +225,8 @@ function App() {
                 onChange={(e) => setOrder(e.target.value as 'asc' | 'desc')}
                 aria-label="Sort direction"
               >
-                <option value="desc">Descending</option>
-                <option value="asc">Ascending</option>
+                <option value="desc">{t('descending')}</option>
+                <option value="asc">{t('ascending')}</option>
               </select>
             </div>
           </div>
@@ -220,21 +240,21 @@ function App() {
         ) : isListError ? (
           <div className="card error-state">
             <AlertCircle size={32} className="state-icon" />
-            <h3>Failed to load tasks</h3>
-            <p>{listError?.message || 'Something went wrong.'}</p>
+            <h3>{language === 'vi' ? 'Không thể tải danh sách công việc' : 'Failed to load tasks'}</h3>
+            <p>{listError?.message || (language === 'vi' ? 'Đã xảy ra lỗi hệ thống.' : 'Something went wrong.')}</p>
             <button 
               type="button"
               className="btn btn-secondary" 
               onClick={() => refetch()} 
               style={{ marginTop: '1rem' }}
             >
-              Try Again
+              {language === 'vi' ? 'Thử lại' : 'Try Again'}
             </button>
           </div>
         ) : items.length === 0 ? (
           <div className="card empty-state">
-            <h3>No tasks found</h3>
-            <p>Get started by creating a new task above.</p>
+            <h3>{t('noTasks')}</h3>
+            <p>{t('getStarted')}</p>
           </div>
         ) : (
           <div className="tasks-lists-wrapper">
@@ -242,7 +262,7 @@ function App() {
             {status !== 'completed' && (
               <div className="task-group">
                 {status === 'all' && pendingTasks.length > 0 && (
-                  <h4 className="group-title">Pending Tasks ({pendingTasks.length})</h4>
+                  <h4 className="group-title">{t('pendingTasksGroup')} ({pendingTasks.length})</h4>
                 )}
                 <div className="tasks-list">
                   {(status === 'all' ? pendingTasks : items).map((todo) => (
@@ -255,7 +275,7 @@ function App() {
                     />
                   ))}
                   {status === 'all' && pendingTasks.length === 0 && completedTasks.length > 0 && (
-                    <div className="empty-group-text">No pending tasks on this page.</div>
+                    <div className="empty-group-text">{t('noPending')}</div>
                   )}
                 </div>
               </div>
@@ -271,7 +291,7 @@ function App() {
                     onClick={() => setCompletedCollapsed(!completedCollapsed)}
                   >
                     <span className="group-title-text">
-                      Completed Tasks ({completedTasks.length})
+                      {t('completedTasksGroup')} ({completedTasks.length})
                     </span>
                     {completedCollapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
                   </button>
@@ -289,7 +309,7 @@ function App() {
                       />
                     ))}
                     {status === 'all' && completedTasks.length === 0 && pendingTasks.length > 0 && (
-                      <div className="empty-group-text">No completed tasks on this page.</div>
+                      <div className="empty-group-text">{t('noCompleted')}</div>
                     )}
                   </div>
                 )}
@@ -308,10 +328,10 @@ function App() {
             disabled={page === 1}
             onClick={() => setPage((p) => Math.max(p - 1, 1))}
           >
-            Previous
+            {t('previous')}
           </button>
           <span className="page-indicator">
-            Page {page} of {totalPages}
+            {t('pageOf', { page, totalPages })}
           </span>
           <button
             type="button"
@@ -319,7 +339,7 @@ function App() {
             disabled={page === totalPages}
             onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
           >
-            Next
+            {t('next')}
           </button>
         </div>
       )}
