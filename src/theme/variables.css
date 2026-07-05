@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --font-sans: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-heading: 'Geist', var(--font-sans);
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Space Grotesk', var(--font-sans);
+  --font-mono: 'JetBrains Mono', monospace;
 
   /* Spacing - 8pt Grid System */
   --space-4: 4px;
@@ -15,19 +16,19 @@
   --space-64: 64px;
 
   /* Border Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;     /* Button, Input */
-  --radius-lg: 16px;     /* Card, Todo Item */
-  --radius-xl: 20px;     /* Dialog, Modal */
-  --radius-full: 999px;  /* Badge */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 999px;
 
-  /* Shadows - Rất nhẹ */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
-  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.18);
-  --shadow-lg: 0 10px 32px rgba(0, 0, 0, 0.24);
+  /* Shadows - Neon Circuit Dark Mode */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
 
   /* Animations & Transitions */
-  --transition: all 150ms ease-out;
+  --transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-checkbox: all 200ms ease-out;
   --transition-dialog: all 250ms ease-out;
   --transition-collapse: all 300ms ease-out;
@@ -35,104 +36,102 @@
   color-scheme: dark light;
 
   /* ========================================== */
-  /* DEFAULT DARK MODE VALUES                  */
+  /* DARK MODE — Neon Circuit                   */
   /* ========================================== */
-  --bg-app: #0F0F11;
-  --bg-surface: #17171A;
-  --bg-surface-secondary: #131316;
-  --bg-card: #1F1F23;
-  --border: #2C2C31;
-  --border-hover: #3B3B42;
+  --bg-app: #08090C;
+  --bg-surface: #0E1015;
+  --bg-surface-secondary: #08090C;
+  --bg-card: #14161C;
+  --border: #22252E;
+  --border-hover: #34D3FF;
 
-  /* Text Hierarchy */
-  --text-primary: #F5F5F7;
-  --text-body: #E4E4E7;
-  --text-secondary: #A1A1AA;
-  --text-disabled: #71717A;
+  --text-primary: #F0F4F8;
+  --text-body: #C7CDD6;
+  --text-secondary: #7B8494;
+  --text-disabled: #454B57;
 
-  /* Accent Colors */
-  --primary: #5E6AD2;
-  --primary-hover: #6D78E8;
-  --primary-glow: rgba(94, 106, 210, 0.15);
-  
-  --success: #22C55E;
-  --warning: #F59E0B;
-  --danger: #EF4444;
+  --primary: #00E5FF;
+  --primary-hover: #38EEFF;
+  --primary-glow: rgba(0, 229, 255, 0.20);
+
+  --success: #39FF9E;
+  --warning: #FFB800;
+  --danger: #FF3D5A;
 
   /* Button Specifics */
-  --bg-btn-secondary: #1F1F23;
-  --border-btn-secondary: #2C2C31;
-  --bg-btn-secondary-hover: #242429;
+  --bg-btn-secondary: #14161C;
+  --border-btn-secondary: #22252E;
+  --bg-btn-secondary-hover: #1B1E26;
   
   /* Input Specifics */
-  --bg-input: #17171A;
-  --border-input: #2C2C31;
+  --bg-input: #0E1015;
+  --border-input: #22252E;
   
   /* Todo Item hover */
-  --bg-todo-hover: #242429;
-  --border-todo-hover: #3B3B42;
+  --bg-todo-hover: #191C23;
+  --border-todo-hover: #2A3F47;
 
   /* Badges */
-  --bg-badge-pending: rgba(94, 106, 210, 0.18);
-  --text-badge-pending: #7C89FF;
-  --bg-badge-completed: rgba(34, 197, 94, 0.18);
-  --text-badge-completed: #4ADE80;
+  --bg-badge-pending: rgba(0, 229, 255, 0.14);
+  --text-badge-pending: #4DEBFF;
+  --bg-badge-completed: rgba(57, 255, 158, 0.14);
+  --text-badge-completed: #6FFFB8;
   
   /* Empty State Specifics */
-  --text-empty-title: #F5F5F7;
-  --text-empty-desc: #A1A1AA;
+  --text-empty-title: #F0F4F8;
+  --text-empty-desc: #7B8494;
 }
 
 /* ========================================== */
-/* COMPANION LIGHT MODE VALUES (Apple/Notion) */
+/* LIGHT MODE — Cloud Circuit                 */
 /* ========================================== */
 :root[data-theme="light"] {
-  --bg-app: #F7F7F5;
+  --bg-app: #F5F7FA;
   --bg-surface: #FFFFFF;
-  --bg-surface-secondary: #EEEEEC;
+  --bg-surface-secondary: #E1E5EB;
   --bg-card: #FFFFFF;
-  --border: #E4E4E7;
-  --border-hover: #D4D4D8;
+  --border: #E1E5EB;
+  --border-hover: #00B8D4;
 
   /* Text Hierarchy */
-  --text-primary: #18181B;
-  --text-body: #3F3F46;
-  --text-secondary: #71717A;
-  --text-disabled: #A1A1AA;
+  --text-primary: #0A0E14;
+  --text-body: #2E3440;
+  --text-secondary: #6B7280;
+  --text-disabled: #A3A9B3;
   
-  --primary: #5E6AD2;
-  --primary-hover: #6D78E8;
-  --primary-glow: rgba(94, 106, 210, 0.15);
+  --primary: #0091B3;
+  --primary-hover: #007A96;
+  --primary-glow: rgba(0, 145, 179, 0.12);
   
-  --success: #16A34A;
-  --warning: #D97706;
-  --danger: #DC2626;
+  --success: #0D9B5C;
+  --warning: #C67D00;
+  --danger: #DC2F4E;
 
   /* Button Specifics */
   --bg-btn-secondary: #FFFFFF;
-  --border-btn-secondary: #D4D4D8;
-  --bg-btn-secondary-hover: #FAFAFA;
+  --border-btn-secondary: #D5DAE1;
+  --bg-btn-secondary-hover: #F7F9FB;
   
   /* Input Specifics */
   --bg-input: #FFFFFF;
-  --border-input: #D4D4D8;
+  --border-input: #D5DAE1;
   
   /* Todo Item hover */
-  --bg-todo-hover: #FAFAFA;
-  --border-todo-hover: #D4D4D8;
+  --bg-todo-hover: #F7F9FB;
+  --border-todo-hover: #B8E4EE;
 
   /* Badges */
-  --bg-badge-pending: #EEF2FF;
-  --text-badge-pending: #4F46E5;
-  --bg-badge-completed: #DCFCE7;
-  --text-badge-completed: #15803D;
+  --bg-badge-pending: #E0F7FB;
+  --text-badge-pending: #007A96;
+  --bg-badge-completed: #DCF7E8;
+  --text-badge-completed: #0D9B5C;
   
   /* Empty State Specifics */
-  --text-empty-title: #18181B;
-  --text-empty-desc: #71717A;
+  --text-empty-title: #0A0E14;
+  --text-empty-desc: #6B7280;
 
-  /* Shadows - Rất nhẹ trong Light Mode */
+  /* Shadows - Rất nhẹ trong Light Mode để tránh bị xám bẩn */
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 32px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.09);
 }
