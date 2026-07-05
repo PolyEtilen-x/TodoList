@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --font-sans: 'Geist', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Geist', var(--font-sans);
+
+  /* Color Palette - Premium Dark Theme (Inspired by Raycast / Linear) */
+  --bg-app: #0F0F11;
+  --bg-surface: #17171A;
+  --bg-card: #1F1F23;
+  --border: #2C2C31;
+  --border-hover: #3B3B42;
+
+  /* Text Hierarchy */
+  --text-primary: #F5F5F7;
+  --text-body: #E4E4E7;
+  --text-secondary: #A1A1AA;
+  --text-disabled: #71717A;
+  --text-muted: #71717A;
+
+  /* Accent Colors */
+  --primary: #5E6AD2;
+  --primary-hover: #6B76E6;
+  --primary-glow: rgba(94, 106, 210, 0.15);
+  
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+
+  /* Spacing - 8pt Grid System */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;     /* Button, Input */
+  --radius-lg: 16px;     /* Card, Todo Item */
+  --radius-xl: 20px;     /* Dialog, Modal */
+  --radius-full: 999px;  /* Badge */
+
+  /* Shadows - Rất nhẹ */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.18);
+  --shadow-lg: 0 10px 32px rgba(0, 0, 0, 0.24);
+
+  /* Animations & Transitions */
+  --transition: all 150ms ease-out;
+  --transition-checkbox: all 200ms ease-out;
+  --transition-dialog: all 250ms ease-out;
+  --transition-collapse: all 300ms ease-out;
+
+  color-scheme: dark;
+}

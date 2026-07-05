@@ -7,12 +7,12 @@ import {
   useDeleteTodo 
 } from './queries/todo.queries';
 import type { Todo } from './types/todo';
-import { StatsSummary } from './components/StatsSummary';
-import { SearchBar } from './components/SearchBar';
-import { FilterChips } from './components/FilterChips';
-import { TodoForm } from './components/TodoForm';
-import { TodoItem } from './components/TodoItem';
-import { SkeletonList } from './components/SkeletonList';
+import { StatsSummary } from './components/stats-summary';
+import { SearchBar } from './components/search-bar';
+import { FilterChips } from './components/filter-chips';
+import { TodoForm } from './components/todo-form';
+import { TodoItem } from './components/todo-item';
+import { SkeletonList } from './components/skeleton-list';
 import { 
   ChevronDown, 
   ChevronUp, 

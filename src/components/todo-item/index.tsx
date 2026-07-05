@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import type { Todo } from '../types/todo';
+import type { Todo } from '../../types/todo';
 import { Edit, Trash2, Calendar, Check, MoreHorizontal } from 'lucide-react';
-import { getRelativeTime } from '../utils/time';
+import { getRelativeTime } from '../../utils/time';
+import './style.css';
 
 interface TodoItemProps {
   todo: Todo;
