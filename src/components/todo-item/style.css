@@ -75,6 +75,7 @@
 }
 
 .todo-item-time {
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-disabled);
   display: inline-flex;

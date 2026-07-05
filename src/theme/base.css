@@ -155,10 +155,13 @@ h3 {
   display: inline-flex;
   align-items: center;
   gap: var(--space-4);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
   font-weight: 600;
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .badge-pending {
