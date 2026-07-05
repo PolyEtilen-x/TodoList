@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import type { Todo } from '../../types/todo';
 import { Edit, Trash2, Calendar, Check, MoreHorizontal } from 'lucide-react';
 import { getRelativeTime } from '../../utils/time';
+import { useApp } from '../../context/AppContext';
 import './style.css';
 
 interface TodoItemProps {
@@ -12,6 +13,7 @@ interface TodoItemProps {
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDelete }) => {
+  const { t } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +56,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDe
           )}
           <div className="todo-item-meta">
             <span className={`badge ${todo.completed ? 'badge-completed' : 'badge-pending'}`}>
-              {todo.completed ? 'Completed' : 'Pending'}
+              {todo.completed ? t('completed') : t('pending')}
             </span>
             <span className="todo-item-time" title={new Date(todo.createdAt).toLocaleString()}>
               <Calendar size={12} className="meta-icon" />
@@ -86,7 +88,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDe
                 setMenuOpen(false);
               }}
             >
-              <Edit size={14} /> Edit Task
+              <Edit size={14} /> {t('editTask')}
             </button>
             <button
               type="button"
@@ -96,7 +98,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDe
                 setMenuOpen(false);
               }}
             >
-              <Trash2 size={14} /> Delete Task
+              <Trash2 size={14} /> {t('deleteTask')}
             </button>
           </div>
         )}

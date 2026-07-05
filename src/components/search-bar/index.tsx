@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 import './style.css';
 
 interface SearchBarProps {
@@ -8,6 +9,7 @@ interface SearchBarProps {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({ value, onSearch }) => {
+  const { t } = useApp();
   const [localValue, setLocalValue] = useState(value);
   const [prevValue, setPrevValue] = useState(value);
 
@@ -33,7 +35,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onSearch }) => {
       <input
         type="text"
         className="input search-input"
-        placeholder="Search tasks by title or description..."
+        placeholder={t('searchPlaceholder')}
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
       />

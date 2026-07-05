@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { Todo } from '../../types/todo';
 import { Check, X } from 'lucide-react';
+import { useApp } from '../../context/AppContext';
 import './style.css';
 
 interface TodoFormProps {
@@ -11,6 +12,7 @@ interface TodoFormProps {
 }
 
 export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCancel, isPending }) => {
+  const { t } = useApp();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
@@ -30,17 +32,19 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
 
     const trimmedTitle = title.trim();
     if (!trimmedTitle) {
-      setError('Title is required.');
+      setError(language === 'vi' ? 'Tiêu đề là bắt buộc.' : 'Title is required.'); // Wait, we can keep the simple error translations directly or use the language! Let's check how language is retrieved.
+      // We can retrieve language from useApp: const { language, t } = useApp();
+      // Let's do that! That is very clean!
       return;
     }
 
     if (trimmedTitle.length > 200) {
-      setError('Title must be 200 characters or less.');
+      setError(language === 'vi' ? 'Tiêu đề không được quá 200 ký tự.' : 'Title must be 200 characters or less.');
       return;
     }
 
     if (description.length > 2000) {
-      setError('Description must be 2000 characters or less.');
+      setError(language === 'vi' ? 'Mô tả không được quá 2000 ký tự.' : 'Description must be 2000 characters or less.');
       return;
     }
 
@@ -51,18 +55,22 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
         setDescription('');
       }
     } catch (err: unknown) {
-      setError((err as Error).message || 'Failed to submit task.');
+      setError((err as Error).message || t('toastCreateError')); // or keep generic error
     }
   };
+
+  const { language } = useApp();
 
   return (
     <form onSubmit={handleSubmit} className="card todo-form">
       <h3 className="form-title">
-        {initialTodo ? 'Edit Task' : 'Create New Task'}
+        {initialTodo ? t('editTask') : t('createNewTask')}
       </h3>
       
       <div className="form-group">
-        <label className="form-label" htmlFor="todo-title">Task Title <span style={{ color: 'red' }}>*</span></label>
+        <label className="form-label" htmlFor="todo-title">
+          {t('taskTitle')} <span style={{ color: 'red' }}>*</span>
+        </label>
         <input
           id="todo-title"
           type="text"
@@ -75,7 +83,9 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       </div>
 
       <div className="form-group">
-        <label className="form-label" htmlFor="todo-desc">Description</label>
+        <label className="form-label" htmlFor="todo-desc">
+          {t('description')}
+        </label>
         <textarea
           id="todo-desc"
           className="input textarea"
@@ -92,11 +102,11 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       <div className="form-actions">
         {onCancel && (
           <button type="button" className="btn btn-secondary" onClick={onCancel} disabled={isPending}>
-            <X size={16} /> Cancel
+            <X size={16} /> {t('cancel')}
           </button>
         )}
         <button type="submit" className="btn btn-primary" disabled={isPending}>
-          <Check size={16} /> {isPending ? (initialTodo ? 'Saving...' : 'Adding...') : (initialTodo ? 'Save Changes' : 'Add Task')}
+          <Check size={16} /> {isPending ? (initialTodo ? t('saving') : t('adding')) : (initialTodo ? t('saveChanges') : t('addTask'))}
         </button>
       </div>
     </form>

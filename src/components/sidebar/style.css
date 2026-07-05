@@ -1,0 +1,119 @@
+.sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 100;
+  display: flex;
+  justify-content: flex-end;
+  transition: background-color 250ms ease-out;
+  pointer-events: none;
+}
+
+.sidebar-backdrop.is-open {
+  background-color: rgba(0, 0, 0, 0.5);
+  pointer-events: auto;
+}
+
+.sidebar-panel {
+  width: 320px;
+  height: 100vh;
+  background-color: var(--bg-surface);
+  border-left: 1px solid var(--border);
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
+  border-radius: 0;
+  padding: var(--space-24);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  transform: translateX(100%);
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-backdrop.is-open .sidebar-panel {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-16);
+}
+
+.sidebar-header h3 {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+  flex: 1;
+}
+
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.section-icon {
+  color: var(--text-secondary);
+}
+
+.settings-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.option-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  width: 100%;
+  padding: var(--space-12);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-card);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+
+.option-btn:hover {
+  background-color: var(--bg-todo-hover);
+  border-color: var(--border-hover);
+}
+
+.option-btn.active {
+  background-color: var(--primary-glow);
+  border-color: var(--primary);
+  color: var(--primary-hover);
+}

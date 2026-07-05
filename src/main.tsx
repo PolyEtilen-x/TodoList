@@ -5,6 +5,8 @@ import './theme/variables.css'
 import './theme/base.css'
 import App from './App.tsx'
 
+import { AppProvider } from './context/AppContext'
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -17,7 +19,9 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <AppProvider>
+        <App />
+      </AppProvider>
     </QueryClientProvider>
   </StrictMode>,
 )
