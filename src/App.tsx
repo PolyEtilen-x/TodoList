@@ -7,7 +7,7 @@ import {
   useDeleteTodo 
 } from './queries/todo.queries';
 import type { Todo } from './types/todo';
-import { StatsSummary } from './components/StatsSummary';
+import { StatsSummary } from './components/stats-summary';
 import { SearchBar } from './components/SearchBar';
 import { FilterChips } from './components/filter-chips';
 import { TodoForm } from './components/TodoForm';
