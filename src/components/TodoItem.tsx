@@ -1,5 +1,5 @@
 import React from 'react';
-import { Todo } from '../types/todo';
+import type { Todo } from '../types/todo';
 import { Edit, Trash2, Calendar, Check } from 'lucide-react';
 import { getRelativeTime } from '../utils/time';
 
