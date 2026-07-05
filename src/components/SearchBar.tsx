@@ -8,11 +8,12 @@ interface SearchBarProps {
 
 export const SearchBar: React.FC<SearchBarProps> = ({ value, onSearch }) => {
   const [localValue, setLocalValue] = useState(value);
+  const [prevValue, setPrevValue] = useState(value);
 
-  // Keep local state in sync if prop changes from outside
-  useEffect(() => {
+  if (value !== prevValue) {
     setLocalValue(value);
-  }, [value]);
+    setPrevValue(value);
+  }
 
   // Debounce input value changes by 400ms
   useEffect(() => {
