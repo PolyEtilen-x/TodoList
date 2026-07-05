@@ -1,0 +1,10 @@
+.skeleton-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.todo-item-skeleton {
+  height: 76px;
+  border-radius: var(--radius-md);
+}

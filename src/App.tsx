@@ -12,7 +12,7 @@ import { SearchBar } from './components/search-bar';
 import { FilterChips } from './components/filter-chips';
 import { TodoForm } from './components/todo-form';
 import { TodoItem } from './components/todo-item';
-import { SkeletonList } from './components/SkeletonList';
+import { SkeletonList } from './components/skeleton-list';
 import { 
   ChevronDown, 
   ChevronUp, 
