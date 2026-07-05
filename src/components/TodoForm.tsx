@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Todo } from '../types/todo';
+import type { Todo } from '../types/todo';
 import { Check, X } from 'lucide-react';
 
 interface TodoFormProps {

@@ -1,5 +1,5 @@
 import axiosInstance from './axiosInstance';
-import { ApiResponse, PaginatedResult, Todo, TodoQuery, TodoStats } from '../types/todo';
+import type { ApiResponse, PaginatedResult, Todo, TodoQuery, TodoStats } from '../types/todo';
 
 export const getTodos = async (query: TodoQuery): Promise<ApiResponse<PaginatedResult<Todo>>> => {
   const response = await axiosInstance.get<ApiResponse<PaginatedResult<Todo>>>('/todos', { params: query });
