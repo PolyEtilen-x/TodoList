@@ -1,8 +1,8 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: var(--space-16);
+  margin-bottom: var(--space-24);
 }
 
 @media (max-width: 600px) {
@@ -18,31 +18,31 @@
 .stats-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  gap: var(--space-16);
+  padding: var(--space-16);
 }
 
 .stats-icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem;
+  padding: var(--space-12);
   border-radius: var(--radius-md);
 }
 
 .stats-icon-wrapper.total {
-  background-color: var(--primary-light);
-  color: var(--primary);
+  background-color: var(--primary-glow);
+  color: var(--primary-hover);
 }
 
 .stats-icon-wrapper.pending {
-  background-color: var(--status-pending-bg);
-  color: var(--status-pending-text);
+  background-color: rgba(94, 106, 210, 0.18);
+  color: #7C89FF;
 }
 
 .stats-icon-wrapper.completed {
-  background-color: var(--status-completed-bg);
-  color: var(--status-completed-text);
+  background-color: rgba(34, 197, 94, 0.18);
+  color: #4ADE80;
 }
 
 .stats-info {
@@ -59,6 +59,6 @@
 .stats-value {
   font-size: 1.5rem;
   line-height: 1;
-  margin-top: 0.25rem;
+  margin-top: var(--space-4);
   font-weight: 800;
 }
