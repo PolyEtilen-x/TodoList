@@ -15,12 +15,12 @@ body {
 
 #root {
   width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  padding: var(--space-32) var(--space-16);
+  padding: 0;
+  margin: 0;
+  max-width: none;
 }
 
 h1,
@@ -442,4 +442,49 @@ h3 {
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-secondary);
+}
+
+/* Core Layout Primitives */
+.app-layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--space-32) var(--space-24) var(--space-64);
+  width: 100%;
+  box-sizing: border-box;
+  transition: var(--transition);
+}
+
+/* Mobile Layout adjustment & Settings Hamburger Toggle */
+.settings-trigger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: var(--space-24) var(--space-16) var(--space-48);
+  }
+  
+  .settings-trigger {
+    display: inline-flex;
+  }
+  
+  .app-header {
+    padding-top: var(--space-32); /* offset for top-left menu trigger */
+  }
+}
+
+@media (min-width: 769px) {
+  .main-content {
+    margin-left: 280px; /* offset for fixed sidebar */
+  }
 }

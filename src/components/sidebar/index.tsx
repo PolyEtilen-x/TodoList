@@ -11,7 +11,19 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const { language, setLanguage, theme, setTheme, t } = useApp();
   
-  // Sync isOpen prop to mounted state in the rendering phase to avoid cascading renders warning
+  // Track responsive screen width
+  const [isDesktop, setIsDesktop] = useState(() => window.innerWidth > 768);
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 769px)');
+    const listener = (e: MediaQueryListEvent) => {
+      setIsDesktop(e.matches);
+    };
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, []);
+
+  // Sync isOpen prop to mounted state in the rendering phase (for Mobile drawer)
   const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
   const [mounted, setMounted] = useState(isOpen);
 
@@ -22,8 +34,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     }
   }
 
-  // Handle body scrolling lock and unmounting animation timer
+  // Handle body scrolling lock (Mobile only) and unmounting animation timer
   useEffect(() => {
+    if (isDesktop) {
+      document.body.style.overflow = '';
+      return;
+    }
+
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       return () => {
@@ -33,11 +50,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
       const timer = setTimeout(() => setMounted(false), 250);
       return () => clearTimeout(timer);
     }
-  }, [isOpen]);
+  }, [isOpen, isDesktop]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape' && isOpen && !isDesktop) {
         onClose();
       }
     };
@@ -45,26 +62,32 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, isDesktop]);
 
-  if (!mounted) return null;
+  const shouldRender = isDesktop || mounted;
+  if (!shouldRender) return null;
 
   return (
-    <div className={`sidebar-backdrop ${isOpen ? 'is-open' : ''}`} onClick={onClose}>
+    <div 
+      className={`sidebar-backdrop ${isDesktop ? 'is-desktop' : ''} ${isOpen ? 'is-open' : ''}`} 
+      onClick={isDesktop ? undefined : onClose}
+    >
       <div 
         className="sidebar-panel card" 
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sidebar-header">
           <h3>{t('sidebarTitle')}</h3>
-          <button 
-            type="button" 
-            className="btn btn-secondary btn-icon-only close-btn" 
-            onClick={onClose}
-            aria-label="Close settings"
-          >
-            <X size={18} />
-          </button>
+          {!isDesktop && (
+            <button 
+              type="button" 
+              className="btn btn-secondary btn-icon-only close-btn" 
+              onClick={onClose}
+              aria-label="Close settings"
+            >
+              <X size={18} />
+            </button>
+          )}
         </div>
 
         <div className="sidebar-content">
