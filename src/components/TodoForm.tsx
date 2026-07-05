@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Todo } from '../types/todo';
+import React, { useState } from 'react';
+import type { Todo } from '../types/todo';
 import { Check, X } from 'lucide-react';
 
 interface TodoFormProps {
@@ -13,17 +13,15 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
+  const [prevInitialTodoId, setPrevInitialTodoId] = useState<string | null>(initialTodo?.id || null);
 
-  useEffect(() => {
-    if (initialTodo) {
-      setTitle(initialTodo.title);
-      setDescription(initialTodo.description || '');
-    } else {
-      setTitle('');
-      setDescription('');
-    }
+  const currentInitialTodoId = initialTodo?.id || null;
+  if (currentInitialTodoId !== prevInitialTodoId) {
+    setTitle(initialTodo ? initialTodo.title : '');
+    setDescription(initialTodo?.description || '');
     setError('');
-  }, [initialTodo]);
+    setPrevInitialTodoId(currentInitialTodoId);
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,8 +49,8 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
         setTitle('');
         setDescription('');
       }
-    } catch (err: any) {
-      setError(err.message || 'Failed to submit task.');
+    } catch (err: unknown) {
+      setError((err as Error).message || 'Failed to submit task.');
     }
   };
 

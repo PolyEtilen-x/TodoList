@@ -1,5 +1,5 @@
 import React from 'react';
-import { TodoStats } from '../types/todo';
+import type { TodoStats } from '../types/todo';
 import { CheckCircle2, Circle, ListTodo } from 'lucide-react';
 
 interface StatsSummaryProps {
