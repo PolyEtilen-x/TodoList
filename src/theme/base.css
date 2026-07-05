@@ -92,13 +92,13 @@ h3 {
 }
 
 .btn-secondary {
-  background-color: transparent;
-  border-color: var(--border);
+  background-color: var(--bg-btn-secondary);
+  border: 1px solid var(--border-btn-secondary);
   color: var(--text-primary);
 }
 
 .btn-secondary:hover {
-  background-color: #242429;
+  background-color: var(--bg-btn-secondary-hover);
   border-color: var(--border-hover);
 }
 
@@ -125,8 +125,8 @@ h3 {
   font-family: var(--font-sans);
   font-size: 0.875rem;
   padding: 0.625rem 0.875rem;
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border);
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-input);
   border-radius: var(--radius-md);
   color: var(--text-primary);
   outline: none;
@@ -161,13 +161,13 @@ h3 {
 }
 
 .badge-pending {
-  background-color: rgba(94, 106, 210, 0.18);
-  color: #7C89FF;
+  background-color: var(--bg-badge-pending);
+  color: var(--text-badge-pending);
 }
 
 .badge-completed {
-  background-color: rgba(34, 197, 94, 0.18);
-  color: #4ADE80;
+  background-color: var(--bg-badge-completed);
+  color: var(--text-badge-completed);
 }
 
 /* Toast Alerts */
@@ -344,7 +344,7 @@ h3 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
+  color: var(--text-empty-desc);
 }
 
 .empty-state h3,
@@ -352,19 +352,19 @@ h3 {
   font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: var(--space-8);
-  color: var(--text-primary);
+  color: var(--text-empty-title);
 }
 
 .empty-state p,
 .error-state p {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--text-empty-desc);
   max-width: 280px;
 }
 
 .state-icon {
   margin-bottom: var(--space-16);
-  color: var(--text-secondary);
+  color: var(--primary);
 }
 
 .error-state .state-icon {
