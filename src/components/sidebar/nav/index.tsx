@@ -60,7 +60,11 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
 
   // Đóng context menu khi click ra ngoài
   useEffect(() => {
-    const handleCloseMenu = () => {
+    const handleCloseMenu = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.context-menu')) {
+        return;
+      }
       setContextMenu(null);
       setGroupContextMenu(null);
     };
