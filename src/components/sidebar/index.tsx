@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Plus, FolderPlus } from 'lucide-react';
 import { SearchBar } from '../search-bar';
-import { useTodoListsQuery, useTodoGroupsQuery } from '../../queries/todo.queries';
+import { useTodoListsQuery, useTodoGroupsQuery, useCreateTodoList, useCreateTodoGroup } from '../../queries/todo.queries';
+import { useApp } from '../../context/AppContext';
+import { useToast } from '../../context/ToastContext';
 import { SidebarProfile } from './profile';
 import { SidebarNav } from './nav';
 import { SidebarFooter } from './footer';
@@ -29,6 +32,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   const { data: listsData } = useTodoListsQuery();
   const { data: groupsData } = useTodoGroupsQuery();
+  const { language } = useApp();
+  const { addToast } = useToast();
+  const createListMutation = useCreateTodoList();
+  const createGroupMutation = useCreateTodoGroup();
 
   const allLists = listsData?.data || [];
   const systemLists = allLists.filter(l => l.isSystem);
@@ -65,7 +72,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
       document.body.style.overflow = '';
       return;
     }
-
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       return () => { document.body.style.overflow = ''; };
@@ -84,6 +90,34 @@ export const Sidebar: React.FC<SidebarProps> = ({
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose, isDesktop]);
+
+  const handleCreateList = async () => {
+    const defaultName = language === 'vi'
+      ? `Danh sách chưa đặt tên (${customLists.length + 1})`
+      : `Untitled list (${customLists.length + 1})`;
+    try {
+      const res = await createListMutation.mutateAsync({ name: defaultName });
+      if (res?.success && res.data?.id) {
+        setEditingListId(res.data.id);
+      }
+    } catch (err: any) {
+      addToast(err.message || (language === 'vi' ? 'Không thể tạo danh sách' : 'Failed to create list'), 'error');
+    }
+  };
+
+  const handleCreateGroup = async () => {
+    const defaultName = language === 'vi'
+      ? `Nhóm chưa đặt tên (${groups.length + 1})`
+      : `Untitled group (${groups.length + 1})`;
+    try {
+      const res = await createGroupMutation.mutateAsync({ name: defaultName });
+      if (res?.success && res.data?.id) {
+        setEditingGroupId(res.data.id);
+      }
+    } catch (err: any) {
+      addToast(err.message || (language === 'vi' ? 'Không thể tạo nhóm' : 'Failed to create group'), 'error');
+    }
+  };
 
   const shouldRender = isDesktop || mounted;
   if (!shouldRender) return null;
@@ -117,13 +151,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
           setEditingGroupId={setEditingGroupId}
         />
 
-        {/* BOTTOM ACTIONS & SETTINGS */}
-        <SidebarFooter
-          setEditingListId={setEditingListId}
-          setEditingGroupId={setEditingGroupId}
-          customListsCount={customLists.length}
-          groupsCount={groups.length}
-        />
+        {/* NEW LIST / GROUP ACTIONS — nằm ngay dưới nav */}
+        <div className="sidebar-actions-row">
+          <button
+            type="button"
+            className="btn-new-list-flat"
+            onClick={handleCreateList}
+            disabled={createListMutation.isPending}
+          >
+            <Plus size={18} />
+            <span>{language === 'vi' ? 'Danh sách mới' : 'New list'}</span>
+          </button>
+          <button
+            type="button"
+            className="btn-new-group-icon"
+            onClick={handleCreateGroup}
+            disabled={createGroupMutation.isPending}
+            title={language === 'vi' ? 'Nhóm mới' : 'New group'}
+          >
+            <FolderPlus size={18} />
+          </button>
+        </div>
+
+        {/* SETTINGS — dòng phụ cuối cùng */}
+        <SidebarFooter />
       </div>
     </div>
   );

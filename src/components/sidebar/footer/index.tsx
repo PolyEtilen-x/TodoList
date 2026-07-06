@@ -1,89 +1,13 @@
 import React from 'react';
-import { Plus, Languages, Moon, Sun, FolderPlus } from 'lucide-react';
+import { Languages, Moon, Sun } from 'lucide-react';
 import { useApp } from '../../../context/AppContext';
-import { useCreateTodoList, useCreateTodoGroup } from '../../../queries/todo.queries';
-import { useToast } from '../../../context/ToastContext';
 import './style.css';
 
-interface SidebarFooterProps {
-  setEditingListId: (id: string | null) => void;
-  setEditingGroupId: (id: string | null) => void;
-  customListsCount: number;
-  groupsCount: number;
-}
-
-export const SidebarFooter: React.FC<SidebarFooterProps> = ({
-  setEditingListId,
-  setEditingGroupId,
-  customListsCount,
-  groupsCount,
-}) => {
+export const SidebarFooter: React.FC = () => {
   const { language, setLanguage, theme, setTheme, t } = useApp();
-  const createListMutation = useCreateTodoList();
-  const createGroupMutation = useCreateTodoGroup();
-  const { addToast } = useToast();
-
-  const handleCreateList = async () => {
-    const defaultName = language === 'vi'
-      ? `Danh sách chưa đặt tên (${customListsCount + 1})`
-      : `Untitled list (${customListsCount + 1})`;
-
-    try {
-      const res = await createListMutation.mutateAsync({ name: defaultName });
-      if (res?.success && res.data?.id) {
-        setEditingListId(res.data.id);
-      }
-    } catch (err: any) {
-      addToast(
-        err.message || (language === 'vi' ? 'Không thể tạo danh sách' : 'Failed to create list'),
-        'error'
-      );
-    }
-  };
-
-  const handleCreateGroup = async () => {
-    const defaultName = language === 'vi'
-      ? `Nhóm chưa đặt tên (${groupsCount + 1})`
-      : `Untitled group (${groupsCount + 1})`;
-
-    try {
-      const res = await createGroupMutation.mutateAsync({ name: defaultName });
-      if (res?.success && res.data?.id) {
-        setEditingGroupId(res.data.id);
-      }
-    } catch (err: any) {
-      addToast(
-        err.message || (language === 'vi' ? 'Không thể tạo nhóm' : 'Failed to create group'),
-        'error'
-      );
-    }
-  };
 
   return (
     <div className="sidebar-footer">
-      <div className="footer-row-actions">
-        <button
-          type="button"
-          className="btn-new-list-flat"
-          onClick={handleCreateList}
-          disabled={createListMutation.isPending}
-        >
-          <Plus size={20} className="action-icon" />
-          <span>{language === 'vi' ? 'Danh sách mới' : 'New list'}</span>
-        </button>
-
-        <button
-          type="button"
-          className="btn-new-group-icon"
-          onClick={handleCreateGroup}
-          disabled={createGroupMutation.isPending}
-          title={language === 'vi' ? 'Nhóm mới' : 'New group'}
-        >
-          <FolderPlus size={20} className="action-icon" />
-        </button>
-      </div>
-
-      {/* Row 2: Settings */}
       <div className="footer-row-settings">
         <button
           type="button"
@@ -91,7 +15,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
           onClick={() => setLanguage(language === 'en' ? 'vi' : 'en')}
           title={t('language')}
         >
-          <Languages size={16} />
+          <Languages size={13} />
           <span>{language.toUpperCase()}</span>
         </button>
         <button
@@ -100,7 +24,7 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           title={t('theme')}
         >
-          {theme === 'dark' ? <Moon size={16} /> : <Sun size={16} />}
+          {theme === 'dark' ? <Moon size={13} /> : <Sun size={13} />}
           <span>{theme === 'dark' ? (language === 'vi' ? 'Tối' : 'Dark') : (language === 'vi' ? 'Sáng' : 'Light')}</span>
         </button>
       </div>
