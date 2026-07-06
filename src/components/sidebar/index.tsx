@@ -24,6 +24,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectList
 }) => {
   const [isDesktop, setIsDesktop] = useState(() => window.innerWidth > 768);
+  const [editingListId, setEditingListId] = useState<string | null>(null);
+  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
 
   const { data: listsData } = useTodoListsQuery();
   const { data: groupsData } = useTodoGroupsQuery();
@@ -33,10 +35,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const customLists = allLists.filter(l => !l.isSystem);
   const groups = groupsData?.data || [];
 
-  // Auto-select 'Tasks' list by default if nothing is selected
+  // Auto-select 'Important' list by default if nothing is selected
   useEffect(() => {
     if (!activeListId && systemLists.length > 0) {
-      const defaultList = systemLists.find(l => l.name === 'Tasks') || systemLists[0];
+      const defaultList = systemLists.find(l => l.name === 'Important') || systemLists[0];
       if (defaultList) {
         onSelectList(defaultList.id);
       }
@@ -109,10 +111,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onSelectList={onSelectList}
           isDesktop={isDesktop}
           onClose={onClose}
+          editingListId={editingListId}
+          setEditingListId={setEditingListId}
+          editingGroupId={editingGroupId}
+          setEditingGroupId={setEditingGroupId}
         />
 
         {/* BOTTOM ACTIONS & SETTINGS */}
-        <SidebarFooter />
+        <SidebarFooter 
+          setEditingListId={setEditingListId}
+          setEditingGroupId={setEditingGroupId}
+          customListsCount={customLists.length}
+          groupsCount={groups.length}
+        />
       </div>
     </div>
   );

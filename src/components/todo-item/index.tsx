@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Todo } from '../../types/todo';
-import { Edit, Trash2, Calendar, Check, MoreHorizontal } from 'lucide-react';
+import { Edit, Trash2, Calendar, Check, MoreHorizontal, Star } from 'lucide-react';
 import { getRelativeTime } from '../../utils/time';
 import { useApp } from '../../context/AppContext';
 import './style.css';
@@ -8,12 +8,19 @@ import './style.css';
 interface TodoItemProps {
   todo: Todo;
   onToggle: (id: string, completed: boolean) => void;
+  onToggleImportant: (id: string, isImportant: boolean) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
 }
 
-export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDelete }) => {
-  const { t } = useApp();
+export const TodoItem: React.FC<TodoItemProps> = ({
+  todo,
+  onToggle,
+  onToggleImportant,
+  onEdit,
+  onDelete,
+}) => {
+  const { t, language } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +34,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDe
     if (menuOpen) {
       document.addEventListener('mousedown', handleOutsideClick);
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
@@ -67,6 +74,16 @@ export const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onEdit, onDe
       </div>
 
       <div className="todo-item-actions" ref={menuRef}>
+        <button
+          type="button"
+          className={`btn-star ${todo.isImportant ? 'is-starred' : ''}`}
+          onClick={() => onToggleImportant(todo.id, !todo.isImportant)}
+          title={todo.isImportant ? (language === 'vi' ? 'Bỏ đánh dấu quan trọng' : 'Remove important') : (language === 'vi' ? 'Đánh dấu quan trọng' : 'Mark as important')}
+          aria-label="Star Important"
+        >
+          <Star size={18} fill={todo.isImportant ? 'var(--warning)' : 'none'} />
+        </button>
+
         <button
           type="button"
           className="btn btn-secondary btn-icon-only menu-trigger"

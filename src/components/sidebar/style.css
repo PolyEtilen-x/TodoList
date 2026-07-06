@@ -53,7 +53,8 @@
 
 .sidebar-backdrop.is-desktop .sidebar-panel {
   transform: translateX(0);
-  box-shadow: none; /* No shadow when embedded */
+  box-shadow: none;
+  /* No shadow when embedded */
 }
 
 /* =========================================================
@@ -73,7 +74,8 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #D35400; /* Distinct avatar color */
+  background-color: #D35400;
+  /* Distinct avatar color */
   color: white;
   display: flex;
   align-items: center;
@@ -81,6 +83,20 @@
   font-weight: 600;
   font-size: 1.125rem;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.profile-avatar.guest {
+  background-color: var(--bg-hover) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar-img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
 }
 
 .profile-info {
@@ -119,8 +135,9 @@
 }
 
 .sidebar-search .search-bar {
-  margin-bottom: 0; 
+  margin-bottom: 0;
 }
+
 .sidebar-search .search-input {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -128,6 +145,7 @@
   padding: 8px 12px 8px 36px;
   height: 36px;
 }
+
 .sidebar-search .search-icon {
   left: 10px;
   width: 16px;
@@ -146,6 +164,7 @@
 .sidebar-nav::-webkit-scrollbar {
   width: 4px;
 }
+
 .sidebar-nav::-webkit-scrollbar-thumb {
   background-color: var(--border);
   border-radius: 4px;
@@ -176,7 +195,7 @@
   position: relative;
   color: var(--text-primary);
   text-align: left;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .nav-item:hover {
@@ -184,14 +203,16 @@
 }
 
 .nav-item.active {
-  background-color: rgba(150, 150, 150, 0.15); /* Subtle active background */
+  background-color: rgba(150, 150, 150, 0.15);
+  /* Subtle active background */
 }
 
 /* Vertical Blue Indicator for Active State */
 .nav-item.active::before {
   content: '';
   position: absolute;
-  left: -8px; /* Push to the absolute edge of the container */
+  left: -8px;
+  /* Push to the absolute edge of the container */
   top: 6px;
   bottom: 6px;
   width: 3px;
@@ -225,81 +246,82 @@
 }
 
 /* Bottom Actions & Settings */
+/* Bottom Actions & Settings */
 .sidebar-footer {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: var(--space-12);
   padding: var(--space-16);
   border-top: 1px solid var(--border);
   background-color: var(--bg-surface);
 }
 
-.footer-left-actions {
+.footer-row-actions {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: var(--space-8);
+  width: 100%;
 }
 
-.btn-new-group {
+.footer-row-actions .action-wrapper {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-new-list,
+.btn-new-group-full {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-8);
   background: transparent;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: 6px;
-  border-radius: var(--radius-sm);
-  transition: all 150ms ease;
-}
-
-.btn-new-group:hover {
-  color: var(--primary);
-  background-color: rgba(150, 150, 150, 0.1);
-}
-
-.btn-new-list {
-  display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  background: transparent;
-  border: none;
+  border: 1px solid var(--border);
   color: var(--text-primary);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  padding: 8px 4px;
-  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  transition: all 150ms ease;
+  width: 100%;
+}
+
+.btn-new-list:hover,
+.btn-new-group-full:hover {
+  color: var(--primary);
+  background-color: rgba(150, 150, 150, 0.08);
+  border-color: var(--border-hover);
+}
+
+.btn-new-list:hover svg,
+.btn-new-group-full:hover svg {
+  color: var(--primary);
+}
+
+.btn-new-list svg,
+.btn-new-group-full svg {
+  color: var(--text-secondary);
   transition: color 150ms ease;
 }
 
-.btn-new-list:hover {
-  color: var(--primary);
-}
-
-.btn-new-list svg {
-  color: var(--text-secondary);
-}
-.btn-new-list:hover svg {
-  color: var(--primary);
-}
-
-.sidebar-settings-mini {
+.footer-row-settings {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: var(--space-4);
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-12);
 }
 
 .mini-setting-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-4);
+  gap: var(--space-6);
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-secondary);
   height: 32px;
-  padding: 0 8px;
+  padding: 0 10px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 0.75rem;
@@ -308,8 +330,78 @@
 }
 
 .mini-setting-btn:hover {
-  background-color: rgba(150, 150, 150, 0.1);
+  background-color: rgba(150, 150, 150, 0.08);
   color: var(--text-primary);
+}
+
+.mini-setting-btn svg {
+  color: var(--text-secondary);
+}
+
+.mini-setting-btn:hover svg {
+  color: var(--text-primary);
+}
+
+/* Group Toggle & Nested Lists */
+.btn-group-toggle {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--space-12) !important;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  text-align: left;
+  user-select: none;
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.btn-group-toggle:hover {
+  background-color: rgba(150, 150, 150, 0.1);
+}
+
+.btn-group-toggle .group-chevron {
+  margin-left: auto;
+  color: var(--text-secondary);
+  transition: transform 150ms ease;
+  flex-shrink: 0;
+}
+
+.group-lists-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-left: none !important;
+  gap: 0 !important;
+}
+
+.group-empty-tip {
+  font-size: 0.75rem;
+  color: var(--text-disabled);
+  padding: var(--space-6) var(--space-12);
+  font-style: italic;
+}
+
+/* Guest Sync Notice */
+.sync-notice {
+  font-size: 0.75rem !important;
+  color: var(--primary) !important;
+  font-weight: 500;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.sync-notice:hover {
+  color: var(--primary-hover) !important;
 }
 
 /* Inline Add Form Styles */
@@ -320,7 +412,8 @@
   padding: 8px 4px;
   background: transparent;
   flex: 1;
-  border-bottom: 1px solid var(--primary); /* highlight the active input line */
+  border-bottom: 1px solid var(--primary);
+  /* highlight the active input line */
 }
 
 .inline-add-icon {
@@ -343,3 +436,92 @@
   color: var(--text-disabled);
 }
 
+/* Inline Edit Input inside Sidebar Nav */
+.nav-label-input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  outline: none;
+  padding: 2px 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nav-item.editing {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-6) var(--space-12);
+  background: transparent;
+  cursor: default;
+  pointer-events: auto;
+  /* Allow clicks inside input */
+}
+
+.btn-group-toggle.editing {
+  cursor: default;
+}
+
+.nested-nav-item {
+  padding-left: 28px !important;
+}
+
+/* Hover group action buttons */
+.btn-group-toggle-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.group-actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: var(--space-8);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+.btn-group-toggle:hover .group-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.btn-group-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-group-action:hover {
+  background-color: rgba(150, 150, 150, 0.15);
+  color: var(--text-primary);
+}
+
+/* Make sure chevron behaves correctly when action is visible */
+.btn-group-toggle .group-chevron {
+  margin-left: 0;
+}
+
+.btn-group-toggle:hover .group-chevron {
+  margin-left: 0;
+}
+
+/* Drag & Drop Visual Highlight */
+.btn-group-toggle.drag-over {
+  background-color: var(--primary-glow) !important;
+  box-shadow: 0 0 0 1px var(--primary) inset !important;
+}

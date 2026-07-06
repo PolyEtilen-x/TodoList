@@ -26,6 +26,7 @@ interface TodoListContainerProps {
   setEditingTodo: (todo: Todo | null) => void;
   refetch: () => void;
   handleToggleCompleted: (id: string, completed: boolean) => void;
+  handleToggleImportant: (id: string, isImportant: boolean) => void;
   handleDelete: (id: string) => void;
   setCompletedCollapsed: (collapsed: boolean) => void;
   onSelectList: (id: string) => void;
@@ -52,6 +53,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
   setEditingTodo,
   refetch,
   handleToggleCompleted,
+  handleToggleImportant,
   handleDelete,
   setCompletedCollapsed,
   onSelectList,
@@ -69,6 +71,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
         <SearchResults
           searchQuery={search}
           onTodoToggle={handleToggleCompleted}
+          onTodoToggleImportant={handleToggleImportant}
           onTodoDelete={handleDelete}
           onTodoEdit={setEditingTodo}
           onSelectList={onSelectList}
@@ -117,6 +120,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                       key={todo.id}
                       todo={todo}
                       onToggle={handleToggleCompleted}
+                      onToggleImportant={handleToggleImportant}
                       onEdit={setEditingTodo}
                       onDelete={handleDelete}
                     />
@@ -143,6 +147,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                         key={todo.id}
                         todo={todo}
                         onToggle={handleToggleCompleted}
+                        onToggleImportant={handleToggleImportant}
                         onEdit={setEditingTodo}
                         onDelete={handleDelete}
                       />

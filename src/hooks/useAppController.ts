@@ -36,8 +36,6 @@ export const useAppController = () => {
   if (!isSearchMode && selectedList) {
     if (selectedList.name === 'Important') {
       queryFilters.isImportant = 'true';
-    } else if (selectedList.name === 'My Day') {
-      queryFilters.isMyDay = 'true';
     } else {
       queryFilters.listId = activeListId;
     }
@@ -78,16 +76,14 @@ export const useAppController = () => {
     } else {
       let listId: string | undefined = undefined;
       let isImportant = false;
-      let isMyDay = false;
       
       if (selectedList && !isSearchMode) {
         if (selectedList.name === 'Important') isImportant = true;
-        else if (selectedList.name === 'My Day') isMyDay = true;
         else if (!selectedList.isSystem) listId = selectedList.id;
       }
 
       await createMutation.mutateAsync(
-        { title, description, listId, isImportant, isMyDay },
+        { title, description, listId, isImportant },
         {
           onSuccess: () => {
             addToast(t('toastCreateSuccess'), 'success');
@@ -104,6 +100,17 @@ export const useAppController = () => {
   const handleToggleCompleted = async (id: string, completed: boolean) => {
     await updateMutation.mutateAsync(
       { id, data: { completed } },
+      {
+        onError: (err: Error) => {
+          addToast(err.message || (language === 'vi' ? 'Cập nhật thất bại' : 'Failed to update task'), 'error');
+        },
+      }
+    );
+  };
+
+  const handleToggleImportant = async (id: string, isImportant: boolean) => {
+    await updateMutation.mutateAsync(
+      { id, data: { isImportant } },
       {
         onError: (err: Error) => {
           addToast(err.message || (language === 'vi' ? 'Cập nhật thất bại' : 'Failed to update task'), 'error');
@@ -163,6 +170,7 @@ export const useAppController = () => {
       setSidebarOpen,
       handleCreateOrUpdate,
       handleToggleCompleted,
+      handleToggleImportant,
       handleDelete,
       onSearch,
       onSelectList,
