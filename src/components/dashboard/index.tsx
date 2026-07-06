@@ -75,7 +75,6 @@ export const Dashboard: React.FC = () => {
             onSelectList={actions.onSelectList}
             setPage={actions.setPage}
             t={state.t}
-            language={state.language}
             status={state.status}
             setStatus={actions.setStatus}
             sortBy={state.sortBy}

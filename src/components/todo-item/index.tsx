@@ -73,7 +73,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
               {getRelativeTime(todo.createdAt)}
             </span>
             {todo.startTime && (
-              <span className="todo-item-execution-time" title={language === 'vi' ? 'Thời gian thực hiện' : 'Execution time'}>
+              <span className="todo-item-execution-time" title={t('executionTime')}>
                 <Clock size={12} className="meta-icon" />
                 {formatExecutionTime(todo.startTime, todo.endTime, language)}
               </span>
@@ -88,7 +88,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
           className={`btn-star ${todo.isImportant ? 'is-starred' : ''}`}
           onClick={() => onToggleImportant(todo.id, !todo.isImportant)}
           disabled={disabled}
-          title={todo.isImportant ? (language === 'vi' ? 'Bỏ đánh dấu quan trọng' : 'Remove important') : (language === 'vi' ? 'Đánh dấu quan trọng' : 'Mark as important')}
+          title={todo.isImportant ? t('removeImportant') : t('markImportant')}
           aria-label="Star Important"
         >
           <Star size={18} fill={todo.isImportant ? 'var(--warning)' : 'none'} />

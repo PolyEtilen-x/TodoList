@@ -17,18 +17,31 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
   language,
   t
 }) => {
+  const showDateSubtitle = selectedList && !selectedList.isSystem && selectedList.createdAt;
+  const formattedDate = showDateSubtitle
+    ? new Date(selectedList.createdAt).toLocaleDateString(
+        language === 'vi' ? 'vi-VN' : 'en-US',
+        { year: 'numeric', month: 'long', day: 'numeric' }
+      )
+    : '';
+
   return (
     <header className="app-header">
       {isSearchMode ? (
         <>
-          <h1>{language === 'vi' ? 'Kết quả tìm kiếm' : 'Search Results'}</h1>
+          <h1>{t('searchResults')}</h1>
           <p className="subtitle">
-            {language === 'vi' ? `Hiển thị kết quả cho "${search}"` : `Showing results for "${search}"`}
+            {t('showingResultsFor', { query: search })}
           </p>
         </>
       ) : selectedList ? (
         <>
           <h1>{selectedList.name}</h1>
+          {showDateSubtitle && (
+            <p className="subtitle">
+              {t('createdOn', { date: formattedDate })}
+            </p>
+          )}
         </>
       ) : (
         <>

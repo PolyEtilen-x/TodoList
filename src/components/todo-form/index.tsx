@@ -25,7 +25,7 @@ const formatTimeForInput = (date: Date) => {
 };
 
 export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCancel, isPending }) => {
-  const { t, language } = useApp();
+  const { t } = useApp();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
@@ -84,17 +84,17 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
 
     const trimmedTitle = title.trim();
     if (!trimmedTitle) {
-      setError(language === 'vi' ? 'Tiêu đề là bắt buộc.' : 'Title is required.');
+      setError(t('titleRequired'));
       return;
     }
 
     if (trimmedTitle.length > 200) {
-      setError(language === 'vi' ? 'Tiêu đề không được quá 200 ký tự.' : 'Title must be 200 characters or less.');
+      setError(t('titleTooLong'));
       return;
     }
 
     if (description.length > 2000) {
-      setError(language === 'vi' ? 'Mô tả không được quá 2000 ký tự.' : 'Description must be 2000 characters or less.');
+      setError(t('descriptionTooLong'));
       return;
     }
 
@@ -103,7 +103,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
 
     if (hasTime) {
       if (!startDate || !startTimeVal) {
-        setError(language === 'vi' ? 'Vui lòng chọn đầy đủ ngày và giờ bắt đầu.' : 'Please select both start date and time.');
+        setError(t('selectStartDateTime'));
         return;
       }
       const startObj = new Date(`${startDate}T${startTimeVal}`);
@@ -112,12 +112,12 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       if (endDate && endTimeVal) {
         const endObj = new Date(`${endDate}T${endTimeVal}`);
         if (endObj < startObj) {
-          setError(language === 'vi' ? 'Thời gian kết thúc phải sau thời gian bắt đầu.' : 'End time must be after start time.');
+          setError(t('endTimeAfterStartTime'));
           return;
         }
         finalEndTime = endObj.toISOString();
       } else if (endDate || endTimeVal) {
-        setError(language === 'vi' ? 'Vui lòng điền đầy đủ cả ngày và giờ kết thúc.' : 'Please select both end date and time.');
+        setError(t('selectEndDateTime'));
         return;
       }
     }
@@ -227,7 +227,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
             }}
             disabled={isPending}
           />
-          <span>{language === 'vi' ? 'Đặt thời gian thực hiện' : 'Set execution time'}</span>
+          <span>{t('setExecutionTime')}</span>
         </label>
       </div>
 
@@ -238,7 +238,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
           <div className="time-picker-row">
             <div className="time-row-header">
               <Clock size={16} className="clock-icon" />
-              <span className="time-label">{language === 'vi' ? 'Bắt đầu' : 'Start'}</span>
+              <span className="time-label">{t('timeStart')}</span>
             </div>
             <div className="time-inputs-container">
               <input
@@ -262,7 +262,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
           <div className="time-picker-row">
             <div className="time-row-header">
               <Clock size={16} className="clock-icon" />
-              <span className="time-label">{language === 'vi' ? 'Kết thúc' : 'End'}</span>
+              <span className="time-label">{t('timeEnd')}</span>
             </div>
             <div className="time-inputs-container">
               <input

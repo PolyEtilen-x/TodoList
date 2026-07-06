@@ -42,7 +42,6 @@ interface TodoListContainerProps {
 
   // Translation
   t: (key: TranslationKey, params?: Record<string, string | number>) => string;
-  language: string;
 }
 
 export const TodoListContainer: React.FC<TodoListContainerProps> = ({
@@ -67,7 +66,6 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
   onSelectList,
   setPage,
   t,
-  language,
   status,
   setStatus,
   sortBy,
@@ -110,15 +108,15 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as 'createdAt' | 'updatedAt' | 'title')}
               >
-                <option value="createdAt">{language === 'vi' ? 'Ngày tạo' : 'Created date'}</option>
-                <option value="updatedAt">{language === 'vi' ? 'Ngày cập nhật' : 'Updated date'}</option>
-                <option value="title">{language === 'vi' ? 'Tiêu đề' : 'Title'}</option>
+                <option value="createdAt">{t('sortByCreated')}</option>
+                <option value="updatedAt">{t('sortByUpdated')}</option>
+                <option value="title">{t('sortByTitle')}</option>
               </select>
               <button
                 type="button"
                 className="btn btn-secondary btn-icon-only sort-order-btn"
                 onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
-                title={language === 'vi' ? 'Đảo chiều sắp xếp' : 'Toggle sort order'}
+                title={t('toggleSortOrder')}
               >
                 {order === 'asc' ? '↑' : '↓'}
               </button>
@@ -130,15 +128,15 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
           ) : isListError ? (
             <div className="card error-state">
               <AlertCircle size={32} className="state-icon" />
-              <h3>{language === 'vi' ? 'Không thể tải danh sách công việc' : 'Failed to load tasks'}</h3>
-              <p>{listError?.message || (language === 'vi' ? 'Đã xảy ra lỗi hệ thống.' : 'Something went wrong.')}</p>
+              <h3>{t('failedLoadTasks')}</h3>
+              <p>{listError?.message || t('systemError')}</p>
               <button
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => refetch()}
                 style={{ marginTop: '1rem' }}
               >
-                {language === 'vi' ? 'Thử lại' : 'Try Again'}
+                {t('tryAgain')}
               </button>
             </div>
           ) : items.length === 0 ? (
