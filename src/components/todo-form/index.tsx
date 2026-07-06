@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import type { Todo } from '../../types/todo';
-import { Check, X } from 'lucide-react';
+import { Check, X, Plus } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import './style.css';
 
@@ -12,19 +12,29 @@ interface TodoFormProps {
 }
 
 export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCancel, isPending }) => {
-  const { t } = useApp();
+  const { t, language } = useApp();
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
+  const [isExpanded, setIsExpanded] = useState<boolean>(!!initialTodo);
   const [prevInitialTodoId, setPrevInitialTodoId] = useState<string | null>(initialTodo?.id || null);
+  
+  const titleInputRef = useRef<HTMLInputElement>(null);
 
   const currentInitialTodoId = initialTodo?.id || null;
   if (currentInitialTodoId !== prevInitialTodoId) {
     setTitle(initialTodo ? initialTodo.title : '');
     setDescription(initialTodo?.description || '');
     setError('');
+    setIsExpanded(!!initialTodo);
     setPrevInitialTodoId(currentInitialTodoId);
   }
+
+  useEffect(() => {
+    if (isExpanded && !initialTodo && titleInputRef.current) {
+      titleInputRef.current.focus();
+    }
+  }, [isExpanded, initialTodo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,9 +42,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
 
     const trimmedTitle = title.trim();
     if (!trimmedTitle) {
-      setError(language === 'vi' ? 'Tiêu đề là bắt buộc.' : 'Title is required.'); // Wait, we can keep the simple error translations directly or use the language! Let's check how language is retrieved.
-      // We can retrieve language from useApp: const { language, t } = useApp();
-      // Let's do that! That is very clean!
+      setError(language === 'vi' ? 'Tiêu đề là bắt buộc.' : 'Title is required.');
       return;
     }
 
@@ -53,13 +61,37 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       if (!initialTodo) {
         setTitle('');
         setDescription('');
+        setIsExpanded(false);
       }
     } catch (err: unknown) {
-      setError((err as Error).message || t('toastCreateError')); // or keep generic error
+      setError((err as Error).message || t('toastCreateError'));
     }
   };
 
-  const { language } = useApp();
+  const handleCancelClick = () => {
+    if (onCancel) {
+      onCancel();
+    }
+    if (!initialTodo) {
+      setIsExpanded(false);
+      setTitle('');
+      setDescription('');
+      setError('');
+    }
+  };
+
+  if (!isExpanded && !initialTodo) {
+    return (
+      <button 
+        type="button" 
+        className="quick-add-trigger" 
+        onClick={() => setIsExpanded(true)}
+      >
+        <Plus size={20} className="quick-add-icon" />
+        <span>{t('createNewTask')}</span>
+      </button>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit} className="card todo-form">
@@ -69,10 +101,11 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       
       <div className="form-group">
         <label className="form-label" htmlFor="todo-title">
-          {t('taskTitle')} <span style={{ color: 'red' }}>*</span>
+          {t('taskTitle')} <span style={{ color: 'var(--danger)' }}>*</span>
         </label>
         <input
           id="todo-title"
+          ref={titleInputRef}
           type="text"
           className={`input ${error && !title.trim() ? 'input-error' : ''}`}
           placeholder="E.g., Complete project documentation"
@@ -100,11 +133,9 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       {error && <p className="form-error-msg">{error}</p>}
 
       <div className="form-actions">
-        {onCancel && (
-          <button type="button" className="btn btn-secondary" onClick={onCancel} disabled={isPending}>
-            <X size={16} /> {t('cancel')}
-          </button>
-        )}
+        <button type="button" className="btn btn-secondary" onClick={handleCancelClick} disabled={isPending}>
+          <X size={16} /> {t('cancel')}
+        </button>
         <button type="submit" className="btn btn-primary" disabled={isPending}>
           <Check size={16} /> {isPending ? (initialTodo ? t('saving') : t('adding')) : (initialTodo ? t('saveChanges') : t('addTask'))}
         </button>
