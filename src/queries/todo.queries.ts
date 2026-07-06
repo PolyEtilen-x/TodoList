@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createTodo, deleteTodo, getStats, getTodos, updateTodo } from '../services/todo.api';
+import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch } from '../services/todo.api';
 import type { Todo, TodoQuery } from '../types/todo';
 
 export const useTodosQuery = (query: TodoQuery) => {
@@ -48,5 +48,13 @@ export const useDeleteTodo = () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });
     },
+  });
+};
+
+export const useGlobalSearchQuery = (query: string) => {
+  return useQuery({
+    queryKey: ['search', query],
+    queryFn: () => globalSearch(query),
+    enabled: query.length > 0, // only fetch if there is a query
   });
 };
