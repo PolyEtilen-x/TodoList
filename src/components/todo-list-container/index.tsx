@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronDown, ChevronUp, AlertCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertCircle, ArrowUp, ArrowDown } from 'lucide-react';
 import { TodoForm } from '../todo-form';
 import { TodoItem } from '../todo-item';
 import { SkeletonList } from '../skeleton-list';
@@ -118,7 +118,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                 onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
                 title={t('toggleSortOrder')}
               >
-                {order === 'asc' ? '↑' : '↓'}
+                {order === 'asc' ? <ArrowUp size={16} /> : <ArrowDown size={16} />}
               </button>
             </div>
           </div>

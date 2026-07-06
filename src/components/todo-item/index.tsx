@@ -70,7 +70,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
             </span>
             <span className="todo-item-time" title={new Date(todo.createdAt).toLocaleString()}>
               <Calendar size={12} className="meta-icon" />
-              {getRelativeTime(todo.createdAt)}
+              {getRelativeTime(todo.createdAt, language)}
             </span>
             {todo.startTime && (
               <span className="todo-item-execution-time" title={t('executionTime')}>

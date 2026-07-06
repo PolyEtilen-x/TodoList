@@ -71,5 +71,14 @@
   "markImportant": "Mark as important",
   "executionTime": "Execution time",
   "toastUpdateError": "Failed to update task.",
-  "toastDeleteError": "Failed to delete task."
+  "toastDeleteError": "Failed to delete task.",
+  "profileAnonymous": "Anonymous Account",
+  "syncNotice": "Log in to sync across devices",
+  "searchError": "Search Error",
+  "noSearchResults": "No search results found",
+  "groupsAndFolders": "Groups & Folders",
+  "lists": "Lists",
+  "tasks": "Tasks",
+  "failedFetchSearch": "Failed to fetch search results.",
+  "tryDifferentKeywords": "Try searching with different keywords!"
 }
