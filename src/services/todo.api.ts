@@ -11,8 +11,24 @@ export const getStats = async (filters?: TodoQuery) => {
   return response.data;
 };
 
-export const createTodo = async (title: string, description?: string, listId?: string, isImportant?: boolean, isMyDay?: boolean) => {
-  const response = await axiosInstance.post<ApiResponse<Todo>>('/todos', { title, description, listId, isImportant, isMyDay });
+export const createTodo = async (
+  title: string,
+  description?: string,
+  listId?: string,
+  isImportant?: boolean,
+  isMyDay?: boolean,
+  startTime?: string,
+  endTime?: string
+) => {
+  const response = await axiosInstance.post<ApiResponse<Todo>>('/todos', {
+    title,
+    description,
+    listId,
+    isImportant,
+    isMyDay,
+    startTime,
+    endTime
+  });
   return response.data;
 };
 

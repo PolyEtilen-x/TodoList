@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Todo } from '../../types/todo';
-import { Edit, Trash2, Calendar, Check, MoreHorizontal, Star } from 'lucide-react';
-import { getRelativeTime } from '../../utils/time';
+import { Edit, Trash2, Calendar, Check, MoreHorizontal, Star, Clock } from 'lucide-react';
+import { getRelativeTime, formatExecutionTime } from '../../utils/time';
 import { useApp } from '../../context/AppContext';
 import './style.css';
 
@@ -69,6 +69,12 @@ export const TodoItem: React.FC<TodoItemProps> = ({
               <Calendar size={12} className="meta-icon" />
               {getRelativeTime(todo.createdAt)}
             </span>
+            {todo.startTime && (
+              <span className="todo-item-execution-time" title={language === 'vi' ? 'Thời gian thực hiện' : 'Execution time'}>
+                <Clock size={12} className="meta-icon" />
+                {formatExecutionTime(todo.startTime, todo.endTime, language)}
+              </span>
+            )}
           </div>
         </div>
       </div>

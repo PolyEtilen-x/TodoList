@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   useTodosQuery,
   useStatsQuery,
@@ -25,13 +25,30 @@ export const useAppController = () => {
   const [completedCollapsed, setCompletedCollapsed] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // Status and Sort States
+  const [status, setStatus] = useState<'all' | 'pending' | 'completed'>('all');
+  const [sortBy, setSortBy] = useState<'createdAt' | 'updatedAt' | 'title'>('createdAt');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+
   // 2. Fetch Lists to map Smart Lists
   const { data: listsData } = useTodoListsQuery();
   const selectedList = listsData?.data?.find(l => l.id === activeListId);
   const isSearchMode = search.trim().length > 0;
 
+  // Auto-select 'Important' list by default if nothing is selected
+  useEffect(() => {
+    const allLists = listsData?.data || [];
+    const systemLists = allLists.filter(l => l.isSystem);
+    if (!activeListId && systemLists.length > 0) {
+      const defaultList = systemLists.find(l => l.name === 'Important') || systemLists[0];
+      if (defaultList) {
+        setActiveListId(defaultList.id);
+      }
+    }
+  }, [activeListId, listsData]);
+
   // 3. Build Filters dynamically
-  const queryFilters: TodoQuery = { page, limit };
+  const queryFilters: TodoQuery = { page, limit, status, sortBy, order };
   
   if (!isSearchMode && selectedList) {
     if (selectedList.name === 'Important') {
@@ -59,10 +76,15 @@ export const useAppController = () => {
   const deleteMutation = useDeleteTodo();
 
   // 5. Action Handlers
-  const handleCreateOrUpdate = async (title: string, description?: string) => {
+  const handleCreateOrUpdate = async (
+    title: string,
+    description?: string,
+    startTime?: string,
+    endTime?: string
+  ) => {
     if (editingTodo) {
       await updateMutation.mutateAsync(
-        { id: editingTodo.id, data: { title, description } },
+        { id: editingTodo.id, data: { title, description, startTime, endTime } },
         {
           onSuccess: () => {
             addToast(t('toastUpdateSuccess'), 'success');
@@ -83,7 +105,7 @@ export const useAppController = () => {
       }
 
       await createMutation.mutateAsync(
-        { title, description, listId, isImportant },
+        { title, description, listId, isImportant, startTime, endTime },
         {
           onSuccess: () => {
             addToast(t('toastCreateSuccess'), 'success');
@@ -159,7 +181,10 @@ export const useAppController = () => {
       isSearchMode,
       selectedList,
       language,
-      t
+      t,
+      status,
+      sortBy,
+      order
     },
     actions: {
       setSearch,
@@ -174,7 +199,10 @@ export const useAppController = () => {
       handleDelete,
       onSearch,
       onSelectList,
-      refetch
+      refetch,
+      setStatus,
+      setSortBy,
+      setOrder
     },
     data: {
       todosData,

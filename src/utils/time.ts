@@ -34,3 +34,42 @@ export const getRelativeTime = (dateString: string): string => {
     year: 'numeric' 
   });
 };
+
+export const formatExecutionTime = (
+  startTimeString: string,
+  endTimeString?: string,
+  language: string = 'en'
+): string => {
+  const start = new Date(startTimeString);
+  
+  const formatDate = (date: Date) => {
+    if (language === 'vi') {
+      return `${date.getDate()} tháng ${date.getMonth() + 1}`;
+    }
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
+  const formatTime = (date: Date) => {
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${hh}:${min}`;
+  };
+
+  const startFormatted = `${formatDate(start)} ${formatTime(start)}`;
+
+  if (!endTimeString) {
+    return startFormatted;
+  }
+
+  const end = new Date(endTimeString);
+  const isSameDay =
+    start.getFullYear() === end.getFullYear() &&
+    start.getMonth() === end.getMonth() &&
+    start.getDate() === end.getDate();
+
+  if (isSameDay) {
+    return `${startFormatted} - ${formatTime(end)}`;
+  }
+
+  return `${startFormatted} - ${formatDate(end)} ${formatTime(end)}`;
+};
