@@ -47,3 +47,50 @@
   transform: none;
   transition: none;
 }
+
+/* New list / group action row */
+.sidebar-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px var(--space-16) 4px 20px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.btn-new-list-flat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 150ms ease;
+}
+
+.btn-new-list-flat:hover {
+  opacity: 0.7;
+}
+
+.btn-new-group-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  transition: all 150ms ease;
+}
+
+.btn-new-group-icon:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
+}
