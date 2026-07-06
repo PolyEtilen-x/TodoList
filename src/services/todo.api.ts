@@ -62,3 +62,8 @@ export const updateTodoGroup = async (id: string, name: string) => {
   const response = await axiosInstance.patch<ApiResponse<TodoGroup>>(`/todo-groups/${id}`, { name });
   return response.data;
 };
+
+export const deleteTodoList = async (id: string) => {
+  const response = await axiosInstance.delete<ApiResponse<void>>(`/todo-lists/${id}`);
+  return response.data;
+};

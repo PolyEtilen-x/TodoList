@@ -525,3 +525,105 @@
   background-color: var(--primary-glow) !important;
   box-shadow: 0 0 0 1px var(--primary) inset !important;
 }
+
+/* Context Menu (Right Click) Styles */
+.context-menu {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 100ms ease;
+  user-select: none;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+  position: relative;
+}
+
+.context-menu-item:hover {
+  background-color: var(--bg-hover);
+}
+
+.context-menu-item.delete {
+  color: var(--danger);
+}
+
+.context-menu-item.delete:hover {
+  background-color: rgba(255, 61, 90, 0.1);
+}
+
+.context-menu-icon {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.context-menu-item.delete .context-menu-icon {
+  color: var(--danger);
+}
+
+.context-menu-shortcut {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--text-disabled);
+  font-weight: 400;
+  padding-left: var(--space-16);
+}
+
+.context-menu-divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: 6px 4px;
+}
+
+/* Submenu Position and Hover trigger */
+.context-menu-submenu-trigger {
+  position: relative;
+}
+
+.context-submenu-arrow {
+  margin-left: auto;
+  color: var(--text-secondary);
+}
+
+.context-submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  margin-left: 2px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  min-width: 160px;
+  display: none;
+  flex-direction: column;
+}
+
+.context-menu-submenu-trigger:hover .context-submenu {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

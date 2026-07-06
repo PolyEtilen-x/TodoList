@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch, getTodoGroups, getTodoLists, createTodoList, createTodoGroup, updateTodoList, updateTodoGroup } from '../services/todo.api';
+import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch, getTodoGroups, getTodoLists, createTodoList, createTodoGroup, updateTodoList, updateTodoGroup, deleteTodoList } from '../services/todo.api';
 import type { Todo, TodoQuery } from '../types/todo';
 
 export const useTodosQuery = (query: TodoQuery) => {
@@ -119,3 +119,15 @@ export const useUpdateTodoGroup = () => {
   });
 };
 
+export const useDeleteTodoList = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deleteTodoList(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
+      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });
+    },
+  });
+};

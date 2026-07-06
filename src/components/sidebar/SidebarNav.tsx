@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Sun as SunIcon, Star, Home, List, Folder, ChevronDown, ChevronRight, Plus } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sun as SunIcon, Star, Home, List, Folder, ChevronDown, ChevronRight, Plus, Edit2, Trash2, FolderOpen } from 'lucide-react';
 import type { TodoList, TodoGroup } from '../../types/todo';
-import { useUpdateTodoList, useUpdateTodoGroup, useCreateTodoList } from '../../queries/todo.queries';
+import { useUpdateTodoList, useUpdateTodoGroup, useCreateTodoList, useDeleteTodoList } from '../../queries/todo.queries';
 
 interface SidebarNavProps {
   systemLists: TodoList[];
@@ -15,6 +15,15 @@ interface SidebarNavProps {
   setEditingListId: (id: string | null) => void;
   editingGroupId: string | null;
   setEditingGroupId: (id: string | null) => void;
+}
+
+interface ContextMenuState {
+  x: number;
+  y: number;
+  listId: string;
+  listName: string;
+  listGroupId?: string;
+  listIcon?: string;
 }
 
 export const SidebarNav: React.FC<SidebarNavProps> = ({
@@ -32,10 +41,44 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
 }) => {
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [dragOverGroupId, setDragOverGroupId] = useState<string | null>(null);
+  const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
 
   const updateListMutation = useUpdateTodoList();
   const updateGroupMutation = useUpdateTodoGroup();
   const createListMutation = useCreateTodoList();
+  const deleteListMutation = useDeleteTodoList();
+
+  // Đóng context menu khi click ra ngoài
+  useEffect(() => {
+    const handleCloseMenu = () => setContextMenu(null);
+    if (contextMenu) {
+      document.addEventListener('click', handleCloseMenu);
+    }
+    return () => document.removeEventListener('click', handleCloseMenu);
+  }, [contextMenu]);
+
+  // Phím tắt bàn phím F2 (đổi tên) và Delete (xóa) khi đang chọn list
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (document.activeElement?.tagName === 'INPUT') return;
+
+      if (activeListId) {
+        const activeList = customLists.find(l => l.id === activeListId);
+        if (!activeList) return;
+
+        if (e.key === 'F2') {
+          e.preventDefault();
+          setEditingListId(activeListId);
+        } else if (e.key === 'Delete') {
+          e.preventDefault();
+          handleDeleteListAction(activeListId);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [activeListId, customLists]);
 
   const toggleGroup = (groupId: string) => {
     setExpandedGroups(prev => ({
@@ -162,6 +205,58 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       });
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  // --- CONTEXT MENU HANDLERS ---
+  const handleContextMenu = (e: React.MouseEvent, list: TodoList) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      listId: list.id,
+      listName: list.name,
+      listGroupId: list.groupId,
+      listIcon: list.icon
+    });
+  };
+
+  const handleRenameAction = (listId: string) => {
+    setContextMenu(null);
+    setEditingListId(listId);
+  };
+
+  const handleMoveListToGroup = async (listId: string, name: string, icon?: string, groupId?: string) => {
+    setContextMenu(null);
+    try {
+      await updateListMutation.mutateAsync({ id: listId, name, icon, groupId });
+      if (groupId) {
+        setExpandedGroups(prev => ({ ...prev, [groupId]: true }));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteListAction = async (listId: string) => {
+    setContextMenu(null);
+    const confirmMsg = navigator.language.startsWith('vi')
+      ? 'Bạn có chắc chắn muốn xóa danh sách này? Tất cả các công việc bên trong cũng sẽ bị xóa.'
+      : 'Are you sure you want to delete this list? All tasks inside will also be deleted.';
+    
+      if (window.confirm(confirmMsg)) {
+      try {
+        await deleteListMutation.mutateAsync(listId);
+        if (activeListId === listId) {
+          const defaultList = systemLists.find(l => l.name === 'Important') || systemLists[0];
+          if (defaultList) {
+            onSelectList(defaultList.id);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -300,6 +395,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                           onClick={() => handleSelect(list.id)}
                           draggable
                           onDragStart={(e) => handleDragStart(e, list.id)}
+                          onContextMenu={(e) => handleContextMenu(e, list)}
                         >
                           <List size={18} className="nav-icon" />
                           <span className="nav-label">{list.name}</span>
@@ -342,6 +438,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
               onClick={() => handleSelect(list.id)}
               draggable
               onDragStart={(e) => handleDragStart(e, list.id)}
+              onContextMenu={(e) => handleContextMenu(e, list)}
             >
               <List size={18} className="nav-icon" />
               <span className="nav-label">{list.name}</span>
@@ -350,6 +447,76 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
           );
         })}
       </div>
+
+      {/* Context Menu */}
+      {contextMenu && (
+        <div 
+          className="context-menu" 
+          style={{ 
+            position: 'fixed', 
+            top: contextMenu.y, 
+            left: contextMenu.x,
+            zIndex: 1000 
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button 
+            type="button" 
+            className="context-menu-item"
+            onClick={() => handleRenameAction(contextMenu.listId)}
+          >
+            <Edit2 size={14} className="context-menu-icon" />
+            <span>{navigator.language.startsWith('vi') ? 'Đổi tên danh sách' : 'Rename list'}</span>
+            <span className="context-menu-shortcut">F2</span>
+          </button>
+
+          <div className="context-menu-submenu-trigger">
+            <button type="button" className="context-menu-item">
+              <FolderOpen size={14} className="context-menu-icon" />
+              <span>{navigator.language.startsWith('vi') ? 'Di chuyển đến nhóm...' : 'Move list to...'}</span>
+              <ChevronRight size={14} className="context-submenu-arrow" />
+            </button>
+            
+            <div className="context-submenu">
+              {contextMenu.listGroupId && (
+                <button
+                  type="button"
+                  className="context-menu-item"
+                  onClick={() => handleMoveListToGroup(contextMenu.listId, contextMenu.listName, contextMenu.listIcon, undefined)}
+                >
+                  <span>{navigator.language.startsWith('vi') ? 'Đưa ra khỏi nhóm' : 'Remove from group'}</span>
+                </button>
+              )}
+              {groups.map(group => {
+                if (group.id === contextMenu.listGroupId) return null;
+                return (
+                  <button
+                    key={group.id}
+                    type="button"
+                    className="context-menu-item"
+                    onClick={() => handleMoveListToGroup(contextMenu.listId, contextMenu.listName, contextMenu.listIcon, group.id)}
+                  >
+                    <Folder size={14} className="context-menu-icon" />
+                    <span>{group.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="context-menu-divider" />
+
+          <button 
+            type="button" 
+            className="context-menu-item delete"
+            onClick={() => handleDeleteListAction(contextMenu.listId)}
+          >
+            <Trash2 size={14} className="context-menu-icon" />
+            <span>{navigator.language.startsWith('vi') ? 'Xóa danh sách' : 'Delete list'}</span>
+            <span className="context-menu-shortcut">Delete</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };
