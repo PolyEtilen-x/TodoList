@@ -33,7 +33,7 @@ export const Dashboard: React.FC = () => {
             }}
             title={state.t('sidebarTitle')}
             aria-label={state.t('sidebarTitle')}
-            style={{ position: 'absolute', top: '24px', left: '16px', zIndex: 10 }}
+            style={{ position: 'absolute', top: '48px', left: '16px', zIndex: 10 }}
           >
             <Menu size={18} />
           </button>
