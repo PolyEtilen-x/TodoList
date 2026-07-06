@@ -1,57 +1,59 @@
 .sidebar-footer {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
-  padding: var(--space-16);
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-16);
   border-top: 1px solid var(--border);
   background-color: var(--bg-surface);
 }
 
 .footer-row-actions {
   display: flex;
-  gap: var(--space-8);
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
+  height: 40px;
 }
 
-.footer-row-actions .action-wrapper {
-  flex: 1;
-  min-width: 0;
+.btn-new-list-flat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 150ms ease;
 }
 
-.btn-new-list,
-.btn-new-group-full {
+.btn-new-list-flat:hover {
+  opacity: 0.8;
+}
+
+.btn-new-list-flat span {
+  color: var(--text-primary);
+}
+
+.btn-new-group-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-8);
   background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: var(--radius-md);
-  transition: all 150ms ease;
-  width: 100%;
-}
-
-.btn-new-list:hover,
-.btn-new-group-full:hover {
-  color: var(--primary);
-  background-color: rgba(150, 150, 150, 0.08);
-  border-color: var(--border-hover);
-}
-
-.btn-new-list:hover svg,
-.btn-new-group-full:hover svg {
-  color: var(--primary);
-}
-
-.btn-new-list svg,
-.btn-new-group-full svg {
+  border: none;
   color: var(--text-secondary);
-  transition: color 150ms ease;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  transition: all 150ms ease;
+}
+
+.btn-new-group-icon:hover {
+  background-color: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .footer-row-settings {
@@ -60,7 +62,7 @@
   align-items: center;
   width: 100%;
   border-top: 1px solid var(--border);
-  padding-top: var(--space-12);
+  padding-top: var(--space-8);
 }
 
 .mini-setting-btn {
@@ -71,8 +73,8 @@
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-secondary);
-  height: 32px;
-  padding: 0 10px;
+  height: 28px;
+  padding: 0 8px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   font-size: 0.75rem;
@@ -81,7 +83,7 @@
 }
 
 .mini-setting-btn:hover {
-  background-color: rgba(150, 150, 150, 0.08);
+  background-color: var(--bg-hover);
   color: var(--text-primary);
 }
 

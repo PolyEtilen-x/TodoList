@@ -52,7 +52,7 @@ export const useAppController = () => {
     refetch 
   } = useTodosQuery(queryFilters);
 
-  const { data: statsData, isLoading: isStatsLoading } = useStatsQuery();
+  const { data: statsData, isLoading: isStatsLoading } = useStatsQuery(queryFilters);
 
   const createMutation = useCreateTodo();
   const updateMutation = useUpdateTodo();

@@ -40,7 +40,6 @@ export const Dashboard: React.FC = () => {
             isSearchMode={state.isSearchMode}
             search={state.search}
             selectedList={state.selectedList}
-            pendingCount={data.statsData?.data?.pending || 0}
             language={state.language}
             t={state.t}
           />
