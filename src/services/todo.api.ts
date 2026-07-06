@@ -53,12 +53,22 @@ export const createTodoGroup = async (name: string) => {
   return response.data;
 };
 
-export const updateTodoList = async (id: string, name: string, icon?: string, groupId?: string) => {
+export const updateTodoList = async (id: string, name: string, icon?: string, groupId?: string | null) => {
   const response = await axiosInstance.patch<ApiResponse<TodoList>>(`/todo-lists/${id}`, { name, icon, groupId });
   return response.data;
 };
 
 export const updateTodoGroup = async (id: string, name: string) => {
   const response = await axiosInstance.patch<ApiResponse<TodoGroup>>(`/todo-groups/${id}`, { name });
+  return response.data;
+};
+
+export const deleteTodoList = async (id: string) => {
+  const response = await axiosInstance.delete<ApiResponse<void>>(`/todo-lists/${id}`);
+  return response.data;
+};
+
+export const deleteTodoGroup = async (id: string) => {
+  const response = await axiosInstance.delete<ApiResponse<void>>(`/todo-groups/${id}`);
   return response.data;
 };

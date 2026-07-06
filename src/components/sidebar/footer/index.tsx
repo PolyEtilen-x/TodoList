@@ -1,8 +1,9 @@
 import React from 'react';
 import { Plus, Languages, Moon, Sun, FolderPlus } from 'lucide-react';
-import { useApp } from '../../context/AppContext';
-import { useCreateTodoList, useCreateTodoGroup } from '../../queries/todo.queries';
-import { useToast } from '../../context/ToastContext';
+import { useApp } from '../../../context/AppContext';
+import { useCreateTodoList, useCreateTodoGroup } from '../../../queries/todo.queries';
+import { useToast } from '../../../context/ToastContext';
+import './style.css';
 
 interface SidebarFooterProps {
   setEditingListId: (id: string | null) => void;
@@ -82,7 +83,6 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
             disabled={createGroupMutation.isPending}
           >
             <FolderPlus size={18} />
-            <span>{language === 'vi' ? 'Nhóm mới' : 'New group'}</span>
           </button>
         </div>
       </div>

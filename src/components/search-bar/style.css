@@ -13,7 +13,8 @@
 }
 
 .search-input {
-  padding-left: var(--space-36); /* custom offset for icon */
+  padding-left: var(--space-36);
+  /* custom offset for icon */
   padding-right: var(--space-36);
   height: 42px;
 }

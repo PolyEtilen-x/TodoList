@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch, getTodoGroups, getTodoLists, createTodoList, createTodoGroup, updateTodoList, updateTodoGroup } from '../services/todo.api';
+import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch, getTodoGroups, getTodoLists, createTodoList, createTodoGroup, updateTodoList, updateTodoGroup, deleteTodoList, deleteTodoGroup } from '../services/todo.api';
 import type { Todo, TodoQuery } from '../types/todo';
 
 export const useTodosQuery = (query: TodoQuery) => {
@@ -24,7 +24,8 @@ export const useCreateTodo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });
-      queryClient.invalidateQueries({ queryKey: ['todo-lists'] }); // in case count updates
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
     },
   });
 };
@@ -37,6 +38,8 @@ export const useUpdateTodo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
     },
   });
 };
@@ -48,6 +51,8 @@ export const useDeleteTodo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
     },
   });
 };
@@ -56,7 +61,7 @@ export const useGlobalSearchQuery = (query: string) => {
   return useQuery({
     queryKey: ['search', query],
     queryFn: () => globalSearch(query),
-    enabled: query.length > 0, // only fetch if there is a query
+    enabled: query.length > 0,
   });
 };
 
@@ -99,7 +104,7 @@ export const useCreateTodoGroup = () => {
 export const useUpdateTodoList = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: { id: string; name: string; icon?: string; groupId?: string }) =>
+    mutationFn: (data: { id: string; name: string; icon?: string; groupId?: string | null }) =>
       updateTodoList(data.id, data.name, data.icon, data.groupId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
@@ -119,3 +124,26 @@ export const useUpdateTodoGroup = () => {
   });
 };
 
+export const useDeleteTodoList = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deleteTodoList(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
+      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });
+    },
+  });
+};
+
+export const useDeleteTodoGroup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deleteTodoGroup(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+    },
+  });
+};

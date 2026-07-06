@@ -1,6 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
-import defaultAvatar from '../../assets/avatar-default.svg';
+import defaultAvatar from '../../../assets/avatar-default.svg';
+import './style.css';
 
 interface SidebarProfileProps {
   isDesktop: boolean;
