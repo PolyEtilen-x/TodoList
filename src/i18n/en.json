@@ -43,5 +43,6 @@
   "saving": "Saving...",
   "adding": "Adding...",
   "deleteTask": "Delete Task",
-  "toastCreateError": "Failed to create task."
+  "toastCreateError": "Failed to create task.",
+  "completionRate": "Completion Rate"
 }

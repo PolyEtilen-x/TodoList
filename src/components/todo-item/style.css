@@ -190,7 +190,7 @@
 }
 
 .menu-item:hover {
-  background-color: var(--bg-hover);
+  background-color: var(--bg-btn-secondary-hover);
   color: var(--text-primary);
 }
 
