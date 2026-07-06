@@ -504,6 +504,7 @@ h3 {
   gap: var(--space-16);
   margin-bottom: var(--space-20);
   flex-wrap: wrap;
+  padding: 0 var(--space-24);
 }
 
 .sort-controls {
