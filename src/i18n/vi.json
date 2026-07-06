@@ -43,5 +43,6 @@
   "saving": "Đang lưu...",
   "adding": "Đang thêm...",
   "deleteTask": "Xóa công việc",
-  "toastCreateError": "Tạo công việc thất bại."
+  "toastCreateError": "Tạo công việc thất bại.",
+  "completionRate": "Tỷ lệ hoàn thành"
 }

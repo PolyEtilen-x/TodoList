@@ -1,3 +1,6 @@
+/* =========================================================
+   Sidebar Structure (Desktop & Mobile Drawer)
+========================================================= */
 .sidebar-backdrop {
   position: fixed;
   top: 0;
@@ -13,145 +16,274 @@
 }
 
 .sidebar-backdrop.is-open {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.4);
   pointer-events: auto;
 }
 
 .sidebar-panel {
   width: 280px;
-  height: 100vh;
+  height: 100%;
   background-color: var(--bg-surface);
   border-right: 1px solid var(--border);
-  border-left: none;
-  border-top: none;
-  border-bottom: none;
-  border-radius: 0;
-  padding: var(--space-24);
-  box-shadow: var(--shadow-lg);
+  transform: translateX(-100%);
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-  gap: var(--space-24);
-  transform: translateX(-100%);
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
 .sidebar-backdrop.is-open .sidebar-panel {
   transform: translateX(0);
 }
 
-/* Desktop Fixed Sidebar */
+/* =========================================================
+   Desktop Overrides (Fixed Layout)
+========================================================= */
 .sidebar-backdrop.is-desktop {
-  position: static;
-  width: 280px;
-  height: 100vh;
-  background-color: transparent !important;
-  display: block;
-  flex-shrink: 0;
-  pointer-events: auto;
-  z-index: 1;
-}
-
-.sidebar-backdrop.is-desktop .sidebar-panel {
-  position: fixed;
-  left: 0;
+  position: sticky;
   top: 0;
   width: 280px;
   height: 100vh;
+  background-color: transparent;
+  pointer-events: auto;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.sidebar-backdrop.is-desktop .sidebar-panel {
   transform: translateX(0);
-  box-shadow: none;
-  border-right: 1px solid var(--border);
-  border-left: none;
-  border-top: none;
-  border-bottom: none;
-  border-radius: 0;
+  box-shadow: none; /* No shadow when embedded */
 }
 
-.sidebar-header {
+/* =========================================================
+   Sidebar UI Elements (MS To-Do Style)
+========================================================= */
+
+/* Profile Header */
+.sidebar-profile {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: var(--space-16);
-}
-
-.sidebar-header h3 {
-  font-family: var(--font-heading);
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.sidebar-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-24);
-  flex: 1;
-}
-
-.settings-section {
-  display: flex;
-  flex-direction: column;
   gap: var(--space-12);
+  padding: var(--space-24) var(--space-16) var(--space-16);
+  position: relative;
 }
 
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.section-icon {
-  color: var(--text-secondary);
-}
-
-/* Segmented Control Toggle Layout */
-.settings-options {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2px;
-  background-color: var(--bg-surface-secondary);
-  padding: 4px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  box-sizing: border-box;
-  width: 100%;
-}
-
-.option-btn {
+.profile-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #D35400; /* Distinct avatar color */
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-8);
-  width: 100%;
-  padding: var(--space-8) var(--space-12);
-  border: 1px solid transparent;
-  border-radius: 8px;
-  background-color: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-sans);
-  font-size: 0.8125rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  text-align: center;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-.option-btn:hover {
+.profile-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.option-btn.active {
+.profile-email {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.sidebar-profile .close-btn {
+  position: absolute;
+  top: var(--space-12);
+  right: var(--space-12);
+}
+
+/* Search Bar Area */
+.sidebar-search {
+  padding: 0 var(--space-16) var(--space-16);
+}
+
+.sidebar-search .search-bar {
+  margin-bottom: 0; 
+}
+.sidebar-search .search-input {
   background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px 12px 8px 36px;
+  height: 36px;
+}
+.sidebar-search .search-icon {
+  left: 10px;
+  width: 16px;
+  height: 16px;
+}
+
+/* Navigation List */
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--space-16);
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 4px;
+}
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  padding: 0 8px;
+}
+
+.nav-divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: var(--space-12) var(--space-16);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 var(--space-12);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  position: relative;
   color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
+  text-align: left;
+  margin-bottom: 2px;
+}
+
+.nav-item:hover {
+  background-color: rgba(150, 150, 150, 0.1);
+}
+
+.nav-item.active {
+  background-color: rgba(150, 150, 150, 0.15); /* Subtle active background */
+}
+
+/* Vertical Blue Indicator for Active State */
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: -8px; /* Push to the absolute edge of the container */
+  top: 6px;
+  bottom: 6px;
+  width: 3px;
+  background-color: var(--primary);
+  border-radius: 0 4px 4px 0;
+}
+
+.nav-icon {
+  color: var(--text-secondary);
+  margin-right: var(--space-16);
+  flex-shrink: 0;
+}
+
+.nav-label {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nav-badge {
+  background-color: rgba(150, 150, 150, 0.15);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  margin-left: var(--space-8);
+}
+
+/* Bottom Actions & Settings */
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-16);
+  border-top: 1px solid var(--border);
+  background-color: var(--bg-surface);
+}
+
+.btn-new-list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 4px;
+  border-radius: var(--radius-sm);
+  transition: color 150ms ease;
+}
+
+.btn-new-list:hover {
+  color: var(--primary);
+}
+
+.btn-new-list svg {
+  color: var(--text-secondary);
+}
+.btn-new-list:hover svg {
+  color: var(--primary);
+}
+
+.sidebar-settings-mini {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.mini-setting-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 150ms ease;
+}
+
+.mini-setting-btn:hover {
+  background-color: rgba(150, 150, 150, 0.1);
+  color: var(--text-primary);
 }

@@ -8,7 +8,7 @@ import {
 } from './queries/todo.queries';
 import type { Todo } from './types/todo';
 import { StatsSummary } from './components/stats-summary';
-import { SearchBar } from './components/search-bar';
+
 import { FilterChips } from './components/filter-chips';
 import { TodoForm } from './components/todo-form';
 import { TodoItem } from './components/todo-item';
@@ -146,7 +146,13 @@ function App() {
   return (
     <div className="app-layout">
       {/* Settings Sidebar */}
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar 
+        isOpen={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)} 
+        search={search}
+        onSearch={(v) => { setSearch(v); setPage(1); }}
+        totalTasks={statsData?.data?.total || 0}
+      />
 
       <main className="main-content">
         <div className="app-container">
@@ -200,8 +206,6 @@ function App() {
 
       {/* Filter and Control Bar */}
       <div className="control-bar card">
-        <SearchBar value={search} onSearch={(v) => { setSearch(v); setPage(1); }} />
-        
         <div className="filter-sort-row">
           <FilterChips value={status} onChange={(v) => { setStatus(v); setPage(1); }} />
           
