@@ -86,6 +86,7 @@ export const useCreateTodoList = () => {
       createTodoList(data.name, data.icon, data.groupId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
     },
   });
 };

@@ -61,30 +61,26 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
 
   return (
     <div className="sidebar-footer">
-      {/* Row 1: Actions */}
       <div className="footer-row-actions">
-        <div className="action-wrapper">
-          <button
-            type="button"
-            className="btn-new-list"
-            onClick={handleCreateList}
-            disabled={createListMutation.isPending}
-          >
-            <Plus size={18} />
-            <span>{language === 'vi' ? 'Danh sách mới' : 'New list'}</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          className="btn-new-list-flat"
+          onClick={handleCreateList}
+          disabled={createListMutation.isPending}
+        >
+          <Plus size={20} className="action-icon" />
+          <span>{language === 'vi' ? 'Danh sách mới' : 'New list'}</span>
+        </button>
 
-        <div className="action-wrapper">
-          <button
-            type="button"
-            className="btn-new-group-full"
-            onClick={handleCreateGroup}
-            disabled={createGroupMutation.isPending}
-          >
-            <FolderPlus size={18} />
-          </button>
-        </div>
+        <button
+          type="button"
+          className="btn-new-group-icon"
+          onClick={handleCreateGroup}
+          disabled={createGroupMutation.isPending}
+          title={language === 'vi' ? 'Nhóm mới' : 'New group'}
+        >
+          <FolderPlus size={20} className="action-icon" />
+        </button>
       </div>
 
       {/* Row 2: Settings */}
