@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch } from '../services/todo.api';
+import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch, getTodoGroups, getTodoLists, createTodoList, createTodoGroup } from '../services/todo.api';
 import type { Todo, TodoQuery } from '../types/todo';
 
 export const useTodosQuery = (query: TodoQuery) => {
@@ -19,11 +19,12 @@ export const useStatsQuery = () => {
 export const useCreateTodo = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ title, description }: { title: string; description?: string }) =>
-      createTodo(title, description),
+    mutationFn: (data: { title: string; description?: string; listId?: string; isImportant?: boolean; isMyDay?: boolean }) =>
+      createTodo(data.title, data.description, data.listId, data.isImportant, data.isMyDay),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] }); // in case count updates
     },
   });
 };
@@ -58,3 +59,40 @@ export const useGlobalSearchQuery = (query: string) => {
     enabled: query.length > 0, // only fetch if there is a query
   });
 };
+
+export const useTodoGroupsQuery = () => {
+  return useQuery({
+    queryKey: ['todo-groups'],
+    queryFn: getTodoGroups,
+  });
+};
+
+export const useTodoListsQuery = () => {
+  return useQuery({
+    queryKey: ['todo-lists'],
+    queryFn: getTodoLists,
+  });
+};
+
+export const useCreateTodoList = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string; icon?: string; groupId?: string }) =>
+      createTodoList(data.name, data.icon, data.groupId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todo-lists'] });
+    },
+  });
+};
+
+export const useCreateTodoGroup = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { name: string }) =>
+      createTodoGroup(data.name),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['todo-groups'] });
+    },
+  });
+};
+

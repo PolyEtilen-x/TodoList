@@ -6,7 +6,7 @@ import './style.css';
 
 interface TodoFormProps {
   initialTodo?: Todo | null;
-  onSubmit: (title: string, description?: string) => Promise<void>;
+  onSubmit: (title: string, description?: string) => void;
   onCancel?: () => void;
   isPending: boolean;
 }
@@ -18,7 +18,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
   const [error, setError] = useState('');
   const [isExpanded, setIsExpanded] = useState<boolean>(!!initialTodo);
   const [prevInitialTodoId, setPrevInitialTodoId] = useState<string | null>(initialTodo?.id || null);
-  
+
   const titleInputRef = useRef<HTMLInputElement>(null);
 
   const currentInitialTodoId = initialTodo?.id || null;
@@ -82,9 +82,9 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
 
   if (!isExpanded && !initialTodo) {
     return (
-      <button 
-        type="button" 
-        className="quick-add-trigger" 
+      <button
+        type="button"
+        className="quick-add-trigger"
         onClick={() => setIsExpanded(true)}
       >
         <Plus size={20} className="quick-add-icon" />
@@ -98,7 +98,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       <h3 className="form-title">
         {initialTodo ? t('editTask') : t('createNewTask')}
       </h3>
-      
+
       <div className="form-group">
         <label className="form-label" htmlFor="todo-title">
           {t('taskTitle')} <span style={{ color: 'var(--danger)' }}>*</span>
