@@ -1,4 +1,4 @@
-export const getRelativeTime = (dateString: string): string => {
+export const getRelativeTime = (dateString: string, language: string = 'en'): string => {
   const now = new Date();
   const date = new Date(dateString);
   const diffMs = now.getTime() - date.getTime();
@@ -7,28 +7,30 @@ export const getRelativeTime = (dateString: string): string => {
   const diffHours = Math.floor(diffMins / 60);
   const diffDays = Math.floor(diffHours / 24);
 
+  const isVi = language === 'vi';
+
   // If the server date is slightly in the future due to clock drift
   if (diffSecs < 0) {
-    return 'Just now';
+    return isVi ? 'Vừa xong' : 'Just now';
   }
 
   if (diffSecs < 60) {
-    return 'Just now';
+    return isVi ? 'Vừa xong' : 'Just now';
   }
   if (diffMins < 60) {
-    return `${diffMins}m ago`;
+    return isVi ? `${diffMins} phút trước` : `${diffMins}m ago`;
   }
   if (diffHours < 24) {
-    return `${diffHours}h ago`;
+    return isVi ? `${diffHours} giờ trước` : `${diffHours}h ago`;
   }
   if (diffDays === 1) {
-    return 'Yesterday';
+    return isVi ? 'Hôm qua' : 'Yesterday';
   }
   if (diffDays < 7) {
-    return `${diffDays}d ago`;
+    return isVi ? `${diffDays} ngày trước` : `${diffDays}d ago`;
   }
   
-  return date.toLocaleDateString(undefined, { 
+  return date.toLocaleDateString(isVi ? 'vi-VN' : 'en-US', { 
     month: 'short', 
     day: 'numeric', 
     year: 'numeric' 

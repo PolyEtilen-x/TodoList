@@ -77,6 +77,16 @@ h3 {
   transition: var(--transition);
 }
 
+.btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .btn-primary {
   background-color: var(--primary);
   color: #ffffff;
@@ -140,6 +150,12 @@ h3 {
 .input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.input:disabled {
+  background-color: var(--border);
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .input-error {

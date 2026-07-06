@@ -1,8 +1,10 @@
+import React from 'react';
 import type { Todo, TodoGroup, TodoList } from '../../types/todo';
 import { useGlobalSearchQuery } from '../../queries/todo.queries';
 import { TodoItem } from '../todo-item';
 import { Folder, List, AlertCircle } from 'lucide-react';
 import { SkeletonList } from '../skeleton-list';
+import { useApp } from '../../context/AppContext';
 import './style.css';
 
 interface SearchResultData {
@@ -28,6 +30,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   onTodoEdit,
   onSelectList
 }) => {
+  const { t } = useApp();
   const { data, isLoading, isError, error } = useGlobalSearchQuery(searchQuery);
 
   if (isLoading) {
@@ -42,8 +45,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     return (
       <div className="card error-state">
         <AlertCircle size={32} className="state-icon" />
-        <h3>Lỗi tìm kiếm</h3>
-        <p>{(error as Error).message || 'Không thể lấy kết quả tìm kiếm.'}</p>
+        <h3>{t('searchError')}</h3>
+        <p>{(error as Error).message || t('failedFetchSearch')}</p>
       </div>
     );
   }
@@ -59,8 +62,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     return (
       <div className="search-empty-state">
         <div className="search-empty-icon">🔍</div>
-        <h3>Không tìm thấy kết quả nào</h3>
-        <p>Thử tìm kiếm với từ khóa khác xem sao!</p>
+        <h3>{t('noSearchResults')}</h3>
+        <p>{t('tryDifferentKeywords')}</p>
       </div>
     );
   }
@@ -69,7 +72,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     <div className="search-results">
       {groups.length > 0 && (
         <section className="search-section">
-          <h3 className="section-title">Nhóm & Thư mục</h3>
+          <h3 className="section-title">{t('groupsAndFolders')}</h3>
           <div className="search-grid">
             {groups.map((group: TodoGroup) => (
               <button key={group.id} className="search-card group-card">
@@ -83,7 +86,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
       {lists.length > 0 && (
         <section className="search-section">
-          <h3 className="section-title">Danh sách</h3>
+          <h3 className="section-title">{t('lists')}</h3>
           <div className="search-grid">
             {lists.map((list: TodoList) => (
               <button
@@ -101,7 +104,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
       {todos.length > 0 && (
         <section className="search-section">
-          <h3 className="section-title">Công việc</h3>
+          <h3 className="section-title">{t('tasks')}</h3>
           <div className="todo-list">
             {todos.map((todo: Todo) => (
               <TodoItem

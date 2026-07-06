@@ -71,5 +71,14 @@
   "markImportant": "Đánh dấu quan trọng",
   "executionTime": "Thời gian thực hiện",
   "toastUpdateError": "Cập nhật công việc thất bại.",
-  "toastDeleteError": "Xóa công việc thất bại."
+  "toastDeleteError": "Xóa công việc thất bại.",
+  "profileAnonymous": "Tài khoản ẩn danh",
+  "syncNotice": "Đăng nhập để đồng bộ đa nền tảng",
+  "searchError": "Lỗi tìm kiếm",
+  "noSearchResults": "Không tìm thấy kết quả nào",
+  "groupsAndFolders": "Nhóm & Thư mục",
+  "lists": "Danh sách",
+  "tasks": "Công việc",
+  "failedFetchSearch": "Không thể lấy kết quả tìm kiếm.",
+  "tryDifferentKeywords": "Thử tìm kiếm với từ khóa khác xem sao!"
 }
