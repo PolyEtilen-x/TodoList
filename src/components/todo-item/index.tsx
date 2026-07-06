@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { Todo } from '../../types/todo';
-import { Edit, Trash2, Calendar, Check, MoreHorizontal, Star } from 'lucide-react';
-import { getRelativeTime } from '../../utils/time';
+import { Edit, Trash2, Calendar, Check, MoreHorizontal, Star, Clock } from 'lucide-react';
+import { getRelativeTime, formatExecutionTime } from '../../utils/time';
 import { useApp } from '../../context/AppContext';
 import './style.css';
 
@@ -11,6 +11,7 @@ interface TodoItemProps {
   onToggleImportant: (id: string, isImportant: boolean) => void;
   onEdit: (todo: Todo) => void;
   onDelete: (id: string) => void;
+  disabled?: boolean;
 }
 
 export const TodoItem: React.FC<TodoItemProps> = ({
@@ -19,6 +20,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   onToggleImportant,
   onEdit,
   onDelete,
+  disabled,
 }) => {
   const { t, language } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -48,6 +50,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
             type="checkbox"
             checked={todo.completed}
             onChange={() => onToggle(todo.id, !todo.completed)}
+            disabled={disabled}
           />
           <span className="checkbox-custom">
             <Check />
@@ -69,6 +72,12 @@ export const TodoItem: React.FC<TodoItemProps> = ({
               <Calendar size={12} className="meta-icon" />
               {getRelativeTime(todo.createdAt)}
             </span>
+            {todo.startTime && (
+              <span className="todo-item-execution-time" title={language === 'vi' ? 'Thời gian thực hiện' : 'Execution time'}>
+                <Clock size={12} className="meta-icon" />
+                {formatExecutionTime(todo.startTime, todo.endTime, language)}
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -78,6 +87,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
           type="button"
           className={`btn-star ${todo.isImportant ? 'is-starred' : ''}`}
           onClick={() => onToggleImportant(todo.id, !todo.isImportant)}
+          disabled={disabled}
           title={todo.isImportant ? (language === 'vi' ? 'Bỏ đánh dấu quan trọng' : 'Remove important') : (language === 'vi' ? 'Đánh dấu quan trọng' : 'Mark as important')}
           aria-label="Star Important"
         >
@@ -88,6 +98,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
           type="button"
           className="btn btn-secondary btn-icon-only menu-trigger"
           onClick={() => setMenuOpen(!menuOpen)}
+          disabled={disabled}
           title="Actions Menu"
           aria-label="Actions Menu"
           aria-expanded={menuOpen}
@@ -100,6 +111,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
             <button
               type="button"
               className="menu-item"
+              disabled={disabled}
               onClick={() => {
                 onEdit(todo);
                 setMenuOpen(false);
@@ -110,6 +122,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
             <button
               type="button"
               className="menu-item delete"
+              disabled={disabled}
               onClick={() => {
                 onDelete(todo.id);
                 setMenuOpen(false);

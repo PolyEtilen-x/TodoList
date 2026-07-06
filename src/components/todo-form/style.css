@@ -89,3 +89,81 @@
     transform: translateY(0);
   }
 }
+
+/* Time Picker Section */
+.form-group-checkbox {
+  margin-bottom: var(--space-16);
+}
+
+.checkbox-label-flat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label-flat input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--primary);
+}
+
+.time-picker-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  padding: var(--space-12) var(--space-16);
+  background-color: var(--bg-hover);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-16);
+}
+
+.time-picker-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+}
+
+.time-row-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  width: 100px; /* Fixed width to synchronize alignment between English and Vietnamese labels */
+  flex-shrink: 0;
+}
+
+.time-row-header .clock-icon {
+  color: var(--text-secondary);
+}
+
+.time-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.time-inputs-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  flex: 1;
+  min-width: 200px;
+}
+
+.time-inputs-container .date-input {
+  flex: 2;
+  min-width: 120px;
+}
+
+.time-inputs-container .time-input {
+  flex: 1;
+  min-width: 80px;
+}
+

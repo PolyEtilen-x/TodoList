@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Sun as SunIcon, Star, Home, List, Folder, ChevronDown, ChevronRight, Plus, Edit2, Trash2, FolderOpen } from 'lucide-react';
 import type { TodoList, TodoGroup } from '../../../types/todo';
 import { useUpdateTodoList, useUpdateTodoGroup, useCreateTodoList, useDeleteTodoList, useDeleteTodoGroup } from '../../../queries/todo.queries';
@@ -79,6 +79,14 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     return () => document.removeEventListener('mousedown', handleCloseMenu);
   }, [contextMenu, groupContextMenu]);
 
+  const handleDeleteListAction = useCallback((listId: string) => {
+    setContextMenu(null);
+    const list = customLists.find(l => l.id === listId);
+    if (list) {
+      setConfirmModal({ type: 'list', id: list.id, name: list.name });
+    }
+  }, [customLists]);
+
   // Phím tắt bàn phím F2 (đổi tên) và Delete (xóa) khi đang chọn list
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -100,7 +108,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [activeListId, customLists]);
+  }, [activeListId, customLists, handleDeleteListAction, setEditingListId]);
 
   const toggleGroup = (groupId: string) => {
     setExpandedGroups(prev => ({
@@ -287,13 +295,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     }
   };
 
-  const handleDeleteListAction = (listId: string) => {
-    setContextMenu(null);
-    const list = customLists.find(l => l.id === listId);
-    if (list) {
-      setConfirmModal({ type: 'list', id: list.id, name: list.name });
-    }
-  };
 
   const handleConfirmDelete = async () => {
     if (!confirmModal) return;

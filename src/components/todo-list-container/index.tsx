@@ -4,7 +4,8 @@ import { TodoForm } from '../todo-form';
 import { TodoItem } from '../todo-item';
 import { SkeletonList } from '../skeleton-list';
 import { SearchResults } from '../search-results';
-import type { Todo } from '../../types/todo';
+import { FilterChips } from '../filter-chips';
+import type { Todo, ApiResponse, PaginatedResult } from '../../types/todo';
 import type { TranslationKey } from '../../i18n/translations';
 
 interface TodoListContainerProps {
@@ -14,15 +15,22 @@ interface TodoListContainerProps {
   isListLoading: boolean;
   isListError: boolean;
   listError: Error | null;
-  todosData: any;
+  todosData?: ApiResponse<PaginatedResult<Todo>>;
   editingTodo: Todo | null;
   isMutating: boolean;
   completedCollapsed: boolean;
   page: number;
   totalPages: number;
 
+  status: 'all' | 'pending' | 'completed';
+  setStatus: (status: 'all' | 'pending' | 'completed') => void;
+  sortBy: 'createdAt' | 'updatedAt' | 'title';
+  setSortBy: (sortBy: 'createdAt' | 'updatedAt' | 'title') => void;
+  order: 'asc' | 'desc';
+  setOrder: (order: 'asc' | 'desc') => void;
+
   // Actions
-  handleCreateOrUpdate: (title: string, description?: string) => void;
+  handleCreateOrUpdate: (title: string, description?: string, startTime?: string, endTime?: string) => void;
   setEditingTodo: (todo: Todo | null) => void;
   refetch: () => void;
   handleToggleCompleted: (id: string, completed: boolean) => void;
@@ -59,7 +67,13 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
   onSelectList,
   setPage,
   t,
-  language
+  language,
+  status,
+  setStatus,
+  sortBy,
+  setSortBy,
+  order,
+  setOrder
 }) => {
   const items: Todo[] = todosData?.data?.items || [];
   const pendingTasks = items.filter((t) => !t.completed);
@@ -85,6 +99,30 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
               onCancel={editingTodo ? () => setEditingTodo(null) : undefined}
               isPending={isMutating}
             />
+          </div>
+
+          {/* Filter & Sort Controls Bar */}
+          <div className="list-controls-bar">
+            <FilterChips value={status} onChange={setStatus} />
+            <div className="sort-controls">
+              <select
+                className="input sort-select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as 'createdAt' | 'updatedAt' | 'title')}
+              >
+                <option value="createdAt">{language === 'vi' ? 'Ngày tạo' : 'Created date'}</option>
+                <option value="updatedAt">{language === 'vi' ? 'Ngày cập nhật' : 'Updated date'}</option>
+                <option value="title">{language === 'vi' ? 'Tiêu đề' : 'Title'}</option>
+              </select>
+              <button
+                type="button"
+                className="btn btn-secondary btn-icon-only sort-order-btn"
+                onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
+                title={language === 'vi' ? 'Đảo chiều sắp xếp' : 'Toggle sort order'}
+              >
+                {order === 'asc' ? '↑' : '↓'}
+              </button>
+            </div>
           </div>
 
           {isListLoading ? (
@@ -123,6 +161,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                       onToggleImportant={handleToggleImportant}
                       onEdit={setEditingTodo}
                       onDelete={handleDelete}
+                      disabled={isMutating}
                     />
                   ))}
                 </div>
@@ -150,6 +189,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                         onToggleImportant={handleToggleImportant}
                         onEdit={setEditingTodo}
                         onDelete={handleDelete}
+                        disabled={isMutating}
                       />
                     ))}
                   </div>

@@ -76,6 +76,12 @@ export const Dashboard: React.FC = () => {
             setPage={actions.setPage}
             t={state.t}
             language={state.language}
+            status={state.status}
+            setStatus={actions.setStatus}
+            sortBy={state.sortBy}
+            setSortBy={actions.setSortBy}
+            order={state.order}
+            setOrder={actions.setOrder}
           />
         </div>
       </main>

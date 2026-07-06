@@ -6,6 +6,8 @@ export interface Todo {
   isImportant: boolean;
   isMyDay: boolean;
   listId?: string;
+  startTime?: string;
+  endTime?: string;
   createdAt: string;
   updatedAt: string;
 }

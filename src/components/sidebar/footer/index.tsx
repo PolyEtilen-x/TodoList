@@ -33,11 +33,9 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
       if (res?.success && res.data?.id) {
         setEditingListId(res.data.id);
       }
-    } catch (err: any) {
-      addToast(
-        err.message || (language === 'vi' ? 'Không thể tạo danh sách' : 'Failed to create list'),
-        'error'
-      );
+    } catch (err: unknown) {
+      const errorMsg = (err as Error).message || (language === 'vi' ? 'Không thể tạo danh sách' : 'Failed to create list');
+      addToast(errorMsg, 'error');
     }
   };
 
@@ -51,11 +49,9 @@ export const SidebarFooter: React.FC<SidebarFooterProps> = ({
       if (res?.success && res.data?.id) {
         setEditingGroupId(res.data.id);
       }
-    } catch (err: any) {
-      addToast(
-        err.message || (language === 'vi' ? 'Không thể tạo nhóm' : 'Failed to create group'),
-        'error'
-      );
+    } catch (err: unknown) {
+      const errorMsg = (err as Error).message || (language === 'vi' ? 'Không thể tạo nhóm' : 'Failed to create group');
+      addToast(errorMsg, 'error');
     }
   };
 

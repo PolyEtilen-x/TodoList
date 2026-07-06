@@ -19,8 +19,24 @@ export const useStatsQuery = (filters: TodoQuery) => {
 export const useCreateTodo = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data: { title: string; description?: string; listId?: string; isImportant?: boolean; isMyDay?: boolean }) =>
-      createTodo(data.title, data.description, data.listId, data.isImportant, data.isMyDay),
+    mutationFn: (data: {
+      title: string;
+      description?: string;
+      listId?: string;
+      isImportant?: boolean;
+      isMyDay?: boolean;
+      startTime?: string;
+      endTime?: string;
+    }) =>
+      createTodo(
+        data.title,
+        data.description,
+        data.listId,
+        data.isImportant,
+        data.isMyDay,
+        data.startTime,
+        data.endTime
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] });
       queryClient.invalidateQueries({ queryKey: ['todos', 'stats'] });

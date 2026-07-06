@@ -1,16 +1,22 @@
-import React from 'react';
+import type { Todo, TodoGroup, TodoList } from '../../types/todo';
 import { useGlobalSearchQuery } from '../../queries/todo.queries';
 import { TodoItem } from '../todo-item';
 import { Folder, List, AlertCircle } from 'lucide-react';
 import { SkeletonList } from '../skeleton-list';
 import './style.css';
 
+interface SearchResultData {
+  groups: TodoGroup[];
+  lists: TodoList[];
+  todos: Todo[];
+}
+
 interface SearchResultsProps {
   searchQuery: string;
   onTodoToggle: (id: string, completed: boolean) => void;
   onTodoToggleImportant: (id: string, isImportant: boolean) => void;
   onTodoDelete: (id: string) => void;
-  onTodoEdit: (todo: any) => void;
+  onTodoEdit: (todo: Todo) => void;
   onSelectList: (id: string) => void;
 }
 
@@ -42,7 +48,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     );
   }
 
-  const results = data?.data as any;
+  const results = data?.data as SearchResultData | undefined;
   const groups = results?.groups || [];
   const lists = results?.lists || [];
   const todos = results?.todos || [];
@@ -65,7 +71,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
         <section className="search-section">
           <h3 className="section-title">Nhóm & Thư mục</h3>
           <div className="search-grid">
-            {groups.map((group: any) => (
+            {groups.map((group: TodoGroup) => (
               <button key={group.id} className="search-card group-card">
                 <Folder size={20} className="card-icon" />
                 <span>{group.name}</span>
@@ -79,7 +85,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
         <section className="search-section">
           <h3 className="section-title">Danh sách</h3>
           <div className="search-grid">
-            {lists.map((list: any) => (
+            {lists.map((list: TodoList) => (
               <button
                 key={list.id}
                 className="search-card list-card"
@@ -97,7 +103,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
         <section className="search-section">
           <h3 className="section-title">Công việc</h3>
           <div className="todo-list">
-            {todos.map((todo: any) => (
+            {todos.map((todo: Todo) => (
               <TodoItem
                 key={todo.id}
                 todo={todo}

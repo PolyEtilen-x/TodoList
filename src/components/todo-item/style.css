@@ -82,6 +82,15 @@
   align-items: center;
 }
 
+.todo-item-execution-time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+}
+
 /* Custom premium Checkbox */
 .checkbox-container {
   display: flex;
