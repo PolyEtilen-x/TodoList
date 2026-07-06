@@ -58,6 +58,7 @@ The interface follows a clean, single-screen dashboard layout designed to maximi
    ```env
    VITE_API_URL=http://localhost:3002
    ```
+   Use `http://localhost:3002` when the backend is started with the provided Docker Compose setup. If the backend is started directly with `npm run start:dev`, use the backend `PORT` value instead, for example `http://localhost:3000`.
 
 3. **Start Development Server**:
    ```bash

@@ -65,7 +65,7 @@
   "sortByUpdated": "Updated date",
   "sortByTitle": "Title",
   "titleRequired": "Title is required.",
-  "titleTooLong": "Title must be 200 characters or less.",
+  "titleTooLong": "Title must be 100 characters or less.",
   "descriptionTooLong": "Description must be 2000 characters or less.",
   "removeImportant": "Remove important",
   "markImportant": "Mark as important",

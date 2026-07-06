@@ -88,7 +88,7 @@ export const TodoForm: React.FC<TodoFormProps> = ({ initialTodo, onSubmit, onCan
       return;
     }
 
-    if (trimmedTitle.length > 200) {
+    if (trimmedTitle.length > 100) {
       setError(t('titleTooLong'));
       return;
     }

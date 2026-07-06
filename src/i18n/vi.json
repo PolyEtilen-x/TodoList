@@ -65,7 +65,7 @@
   "sortByUpdated": "Ngày cập nhật",
   "sortByTitle": "Tiêu đề",
   "titleRequired": "Tiêu đề là bắt buộc.",
-  "titleTooLong": "Tiêu đề không được quá 200 ký tự.",
+  "titleTooLong": "Tiêu đề không được quá 100 ký tự.",
   "descriptionTooLong": "Mô tả không được quá 2000 ký tự.",
   "removeImportant": "Bỏ đánh dấu quan trọng",
   "markImportant": "Đánh dấu quan trọng",
