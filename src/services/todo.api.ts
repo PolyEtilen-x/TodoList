@@ -25,3 +25,8 @@ export const deleteTodo = async (id: string): Promise<ApiResponse<void>> => {
   const response = await axiosInstance.delete<ApiResponse<void>>(`/todos/${id}`);
   return response.data;
 };
+
+export const globalSearch = async (query: string): Promise<ApiResponse<unknown>> => {
+  const response = await axiosInstance.get<ApiResponse<unknown>>('/search', { params: { q: query } });
+  return response.data;
+};
