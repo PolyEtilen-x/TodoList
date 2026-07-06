@@ -444,6 +444,7 @@ h3 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  padding-top: 15px;
 }
 
 .empty-group-text {
