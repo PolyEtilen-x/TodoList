@@ -8,15 +8,17 @@ import './style.css';
 interface SearchResultsProps {
   searchQuery: string;
   onTodoToggle: (id: string, completed: boolean) => void;
+  onTodoToggleImportant: (id: string, isImportant: boolean) => void;
   onTodoDelete: (id: string) => void;
   onTodoEdit: (todo: any) => void;
   onSelectList: (id: string) => void;
 }
 
-export const SearchResults: React.FC<SearchResultsProps> = ({ 
-  searchQuery, 
-  onTodoToggle, 
-  onTodoDelete, 
+export const SearchResults: React.FC<SearchResultsProps> = ({
+  searchQuery,
+  onTodoToggle,
+  onTodoToggleImportant,
+  onTodoDelete,
   onTodoEdit,
   onSelectList
 }) => {
@@ -78,8 +80,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
           <h3 className="section-title">Danh sách</h3>
           <div className="search-grid">
             {lists.map((list: any) => (
-              <button 
-                key={list.id} 
+              <button
+                key={list.id}
                 className="search-card list-card"
                 onClick={() => onSelectList(list.id)}
               >
@@ -96,10 +98,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
           <h3 className="section-title">Công việc</h3>
           <div className="todo-list">
             {todos.map((todo: any) => (
-              <TodoItem 
-                key={todo.id} 
+              <TodoItem
+                key={todo.id}
                 todo={todo}
                 onToggle={onTodoToggle}
+                onToggleImportant={onTodoToggleImportant}
                 onDelete={onTodoDelete}
                 onEdit={onTodoEdit}
               />

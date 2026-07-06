@@ -201,3 +201,42 @@
 .menu-item.delete:hover {
   background-color: rgba(239, 68, 68, 0.08);
 }
+
+/* Star Button Styles */
+.btn-star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-disabled);
+  transition: all 150ms ease;
+  margin-right: 4px;
+}
+
+.btn-star:hover {
+  background-color: rgba(150, 150, 150, 0.08);
+  color: var(--warning);
+}
+
+.btn-star svg {
+  transition: transform 150ms ease, fill 150ms ease, color 150ms ease;
+}
+
+.btn-star:active svg {
+  transform: scale(0.85);
+}
+
+.btn-star.is-starred {
+  color: var(--warning) !important;
+}
+
+.todo-item-actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
