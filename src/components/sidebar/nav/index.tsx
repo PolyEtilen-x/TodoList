@@ -51,6 +51,11 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   const [dragOverGroupId, setDragOverGroupId] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
   const [groupContextMenu, setGroupContextMenu] = useState<GroupContextMenuState | null>(null);
+  const [confirmModal, setConfirmModal] = useState<{
+    type: 'list' | 'group';
+    id: string;
+    name: string;
+  } | null>(null);
 
   const updateListMutation = useUpdateTodoList();
   const updateGroupMutation = useUpdateTodoGroup();
@@ -257,17 +262,11 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     setEditingGroupId(groupId);
   };
 
-  const handleDeleteGroupAction = async (groupId: string) => {
+  const handleDeleteGroupAction = (groupId: string) => {
     setGroupContextMenu(null);
-    const confirmMsg = navigator.language.startsWith('vi')
-      ? 'Bạn có chắc chắn muốn xóa nhóm này? Các danh sách con sẽ được đưa ra ngoài.'
-      : 'Are you sure you want to delete this group? Sub-lists will be ungrouped.';
-    if (window.confirm(confirmMsg)) {
-      try {
-        await deleteGroupMutation.mutateAsync(groupId);
-      } catch (err) {
-        console.error(err);
-      }
+    const group = groups.find(g => g.id === groupId);
+    if (group) {
+      setConfirmModal({ type: 'group', id: group.id, name: group.name });
     }
   };
 
@@ -288,24 +287,33 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     }
   };
 
-  const handleDeleteListAction = async (listId: string) => {
+  const handleDeleteListAction = (listId: string) => {
     setContextMenu(null);
-    const confirmMsg = navigator.language.startsWith('vi')
-      ? 'Bạn có chắc chắn muốn xóa danh sách này? Tất cả các công việc bên trong cũng sẽ bị xóa.'
-      : 'Are you sure you want to delete this list? All tasks inside will also be deleted.';
-    
-      if (window.confirm(confirmMsg)) {
-      try {
-        await deleteListMutation.mutateAsync(listId);
-        if (activeListId === listId) {
+    const list = customLists.find(l => l.id === listId);
+    if (list) {
+      setConfirmModal({ type: 'list', id: list.id, name: list.name });
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmModal) return;
+    const { type, id } = confirmModal;
+    setConfirmModal(null);
+
+    try {
+      if (type === 'list') {
+        await deleteListMutation.mutateAsync(id);
+        if (activeListId === id) {
           const defaultList = systemLists.find(l => l.name === 'Important') || systemLists[0];
           if (defaultList) {
             onSelectList(defaultList.id);
           }
         }
-      } catch (err) {
-        console.error(err);
+      } else if (type === 'group') {
+        await deleteGroupMutation.mutateAsync(id);
       }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -601,6 +609,36 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             <Trash2 size={14} className="context-menu-icon" />
             <span>{navigator.language.startsWith('vi') ? 'Xóa nhóm' : 'Delete group'}</span>
           </button>
+        </div>
+      )}
+
+      {/* Confirm Delete Modal */}
+      {confirmModal && (
+        <div className="modal-backdrop" onClick={() => setConfirmModal(null)}>
+          <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+            <h3 className="modal-title">
+              {confirmModal.type === 'list' 
+                ? (navigator.language.startsWith('vi') ? 'Xóa danh sách' : 'Delete list') 
+                : (navigator.language.startsWith('vi') ? 'Xóa nhóm' : 'Delete group')}
+            </h3>
+            <p className="modal-message">
+              {confirmModal.type === 'list'
+                ? (navigator.language.startsWith('vi') 
+                    ? `Danh sách "${confirmModal.name}" sẽ bị xóa vĩnh viễn.` 
+                    : `“${confirmModal.name}” will be permanently deleted.`)
+                : (navigator.language.startsWith('vi')
+                    ? `Nhóm "${confirmModal.name}" sẽ bị xóa. Các danh sách con sẽ được đưa ra ngoài.`
+                    : `“${confirmModal.name}” will be deleted. Sub-lists will be ungrouped.`)}
+            </p>
+            <div className="modal-actions">
+              <button type="button" className="btn-modal-delete" onClick={handleConfirmDelete}>
+                {navigator.language.startsWith('vi') ? 'Xóa' : 'Delete'}
+              </button>
+              <button type="button" className="btn-modal-cancel" onClick={() => setConfirmModal(null)}>
+                {navigator.language.startsWith('vi') ? 'Hủy' : 'Cancel'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
