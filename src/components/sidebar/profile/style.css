@@ -70,10 +70,7 @@
 }
 
 .sidebar-profile .close-btn {
-  position: absolute;
-  right: var(--space-12);
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
   width: 32px;
   height: 32px;
   border-radius: var(--radius-sm);

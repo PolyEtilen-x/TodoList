@@ -27,10 +27,13 @@ export const Dashboard: React.FC = () => {
           <button
             type="button"
             className="btn btn-secondary btn-icon-only settings-trigger"
-            onClick={() => actions.setSidebarOpen(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              actions.setSidebarOpen(true);
+            }}
             title={state.t('sidebarTitle')}
             aria-label={state.t('sidebarTitle')}
-            style={{ position: 'absolute', top: 0, left: 0, zIndex: 10 }}
+            style={{ position: 'absolute', top: '24px', left: '16px', zIndex: 10 }}
           >
             <Menu size={18} />
           </button>
