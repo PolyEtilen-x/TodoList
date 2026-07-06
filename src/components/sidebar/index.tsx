@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { SearchBar } from '../search-bar';
 import { useTodoListsQuery, useTodoGroupsQuery } from '../../queries/todo.queries';
-import { SidebarProfile } from './SidebarProfile';
-import { SidebarNav } from './SidebarNav';
-import { SidebarFooter } from './SidebarFooter';
+import { SidebarProfile } from './profile';
+import { SidebarNav } from './nav';
+import { SidebarFooter } from './footer';
 import './style.css';
 
 interface SidebarProps {
@@ -103,7 +103,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* MAIN NAVIGATION */}
-        <SidebarNav 
+        <SidebarNav
           systemLists={systemLists}
           customLists={customLists}
           groups={groups}
@@ -118,7 +118,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         />
 
         {/* BOTTOM ACTIONS & SETTINGS */}
-        <SidebarFooter 
+        <SidebarFooter
           setEditingListId={setEditingListId}
           setEditingGroupId={setEditingGroupId}
           customListsCount={customLists.length}

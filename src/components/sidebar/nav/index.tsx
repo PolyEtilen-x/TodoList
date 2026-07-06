@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Sun as SunIcon, Star, Home, List, Folder, ChevronDown, ChevronRight, Plus, Edit2, Trash2, FolderOpen } from 'lucide-react';
-import type { TodoList, TodoGroup } from '../../types/todo';
-import { useUpdateTodoList, useUpdateTodoGroup, useCreateTodoList, useDeleteTodoList } from '../../queries/todo.queries';
+import type { TodoList, TodoGroup } from '../../../types/todo';
+import { useUpdateTodoList, useUpdateTodoGroup, useCreateTodoList, useDeleteTodoList, useDeleteTodoGroup } from '../../../queries/todo.queries';
+import './style.css';
 
 interface SidebarNavProps {
   systemLists: TodoList[];
@@ -26,6 +27,13 @@ interface ContextMenuState {
   listIcon?: string;
 }
 
+interface GroupContextMenuState {
+  x: number;
+  y: number;
+  groupId: string;
+  groupName: string;
+}
+
 export const SidebarNav: React.FC<SidebarNavProps> = ({
   systemLists,
   customLists,
@@ -42,20 +50,25 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
   const [dragOverGroupId, setDragOverGroupId] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<ContextMenuState | null>(null);
+  const [groupContextMenu, setGroupContextMenu] = useState<GroupContextMenuState | null>(null);
 
   const updateListMutation = useUpdateTodoList();
   const updateGroupMutation = useUpdateTodoGroup();
   const createListMutation = useCreateTodoList();
   const deleteListMutation = useDeleteTodoList();
+  const deleteGroupMutation = useDeleteTodoGroup();
 
   // Đóng context menu khi click ra ngoài
   useEffect(() => {
-    const handleCloseMenu = () => setContextMenu(null);
-    if (contextMenu) {
-      document.addEventListener('click', handleCloseMenu);
+    const handleCloseMenu = () => {
+      setContextMenu(null);
+      setGroupContextMenu(null);
+    };
+    if (contextMenu || groupContextMenu) {
+      document.addEventListener('mousedown', handleCloseMenu);
     }
-    return () => document.removeEventListener('click', handleCloseMenu);
-  }, [contextMenu]);
+    return () => document.removeEventListener('mousedown', handleCloseMenu);
+  }, [contextMenu, groupContextMenu]);
 
   // Phím tắt bàn phím F2 (đổi tên) và Delete (xóa) khi đang chọn list
   useEffect(() => {
@@ -201,7 +214,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
         id: listId,
         name: list.name,
         icon: list.icon,
-        groupId: undefined, // chuyển thành ungrouped
+        groupId: null, // chuyển thành ungrouped
       });
     } catch (err) {
       console.error(err);
@@ -212,6 +225,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   const handleContextMenu = (e: React.MouseEvent, list: TodoList) => {
     e.preventDefault();
     e.stopPropagation();
+    setGroupContextMenu(null); // Đóng menu nhóm
     setContextMenu({
       x: e.clientX,
       y: e.clientY,
@@ -222,12 +236,43 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
     });
   };
 
+  const handleGroupContextMenu = (e: React.MouseEvent, group: TodoGroup) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setContextMenu(null); // Đóng menu danh sách
+    setGroupContextMenu({
+      x: e.clientX,
+      y: e.clientY,
+      groupId: group.id,
+      groupName: group.name,
+    });
+  };
+
+  const handleRenameGroupAction = (groupId: string) => {
+    setGroupContextMenu(null);
+    setEditingGroupId(groupId);
+  };
+
+  const handleDeleteGroupAction = async (groupId: string) => {
+    setGroupContextMenu(null);
+    const confirmMsg = navigator.language.startsWith('vi')
+      ? 'Bạn có chắc chắn muốn xóa nhóm này? Các danh sách con sẽ được đưa ra ngoài.'
+      : 'Are you sure you want to delete this group? Sub-lists will be ungrouped.';
+    if (window.confirm(confirmMsg)) {
+      try {
+        await deleteGroupMutation.mutateAsync(groupId);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
   const handleRenameAction = (listId: string) => {
     setContextMenu(null);
     setEditingListId(listId);
   };
 
-  const handleMoveListToGroup = async (listId: string, name: string, icon?: string, groupId?: string) => {
+  const handleMoveListToGroup = async (listId: string, name: string, icon?: string, groupId?: string | null) => {
     setContextMenu(null);
     try {
       await updateListMutation.mutateAsync({ id: listId, name, icon, groupId });
@@ -277,13 +322,9 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
   const ungroupedLists = customLists.filter(list => !list.groupId);
 
   return (
-    <div 
-      className="sidebar-nav scrollable"
-      onDragOver={handleDragOver}
-      onDrop={handleDropOutside}
-    >
-      {/* SYSTEM LISTS */}
-      <div className="nav-group">
+    <div className="sidebar-nav">
+      {/* SYSTEM LISTS - FIXED AT TOP */}
+      <div className="system-lists-container">
         {systemLists.map(list => (
           <button
             key={list.id}
@@ -299,153 +340,160 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
 
       <div className="nav-divider" />
 
-      {/* GROUPS & CUSTOM LISTS */}
-      <div className="nav-group">
-        {groups.map(group => {
-          const isExpanded = !!expandedGroups[group.id];
-          const isEditing = editingGroupId === group.id;
-          const groupLists = group.lists || [];
-          const isDragOver = dragOverGroupId === group.id;
+      {/* GROUPS & CUSTOM LISTS - SCROLLABLE AREA */}
+      <div 
+        className="sidebar-nav-scrollable"
+        onDragOver={handleDragOver}
+        onDrop={handleDropOutside}
+      >
+        <div className="nav-group">
+          {groups.map(group => {
+            const isExpanded = !!expandedGroups[group.id];
+            const isEditing = editingGroupId === group.id;
+            const groupLists = group.lists || [];
+            const isDragOver = dragOverGroupId === group.id;
 
-          return (
-            <div 
-              key={group.id} 
-              className="nav-group-container"
-              onDragOver={handleDragOver}
-              onDragEnter={(e) => handleDragEnter(e, group.id)}
-              onDragLeave={handleDragLeave}
-              onDrop={(e) => handleDropOnGroup(e, group.id)}
-            >
-              {isEditing ? (
-                <div className="btn-group-toggle editing" onClick={(e) => e.stopPropagation()}>
-                  <Folder size={18} className="nav-icon" />
-                  <input
-                    type="text"
-                    className="nav-label-input"
-                    defaultValue={group.name}
-                    onBlur={(e) => handleRenameGroup(group.id, e.target.value)}
-                    onKeyDown={(e) => handleKeyDownGroup(e, group.id)}
-                    autoFocus
-                    onFocus={(e) => e.target.select()}
-                    onClick={(e) => e.stopPropagation()}
-                  />
-                  <ChevronRight size={16} className="group-chevron" style={{ opacity: 0.3 }} />
-                </div>
-              ) : (
-                <div className="btn-group-toggle-wrapper">
-                  <button 
-                    type="button"
-                    className={`btn-group-toggle ${isDragOver ? 'drag-over' : ''}`}
-                    onClick={() => toggleGroup(group.id)}
-                  >
+            return (
+              <div 
+                key={group.id} 
+                className="nav-group-container"
+                onDragOver={handleDragOver}
+                onDragEnter={(e) => handleDragEnter(e, group.id)}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => handleDropOnGroup(e, group.id)}
+              >
+                {isEditing ? (
+                  <div className="btn-group-toggle editing" onClick={(e) => e.stopPropagation()}>
                     <Folder size={18} className="nav-icon" />
-                    <span className="nav-label">{group.name}</span>
-                    <div className="group-actions" onClick={(e) => e.stopPropagation()}>
-                      <button
-                        type="button"
-                        className="btn-group-action"
-                        onClick={() => handleCreateListInGroup(group.id)}
-                        disabled={createListMutation.isPending}
-                        title={navigator.language.startsWith('vi') ? 'Thêm danh sách' : 'Add list'}
-                      >
-                        <Plus size={14} />
-                      </button>
-                    </div>
-                    {isExpanded ? (
-                      <ChevronDown size={16} className="group-chevron" />
-                    ) : (
-                      <ChevronRight size={16} className="group-chevron" />
-                    )}
-                  </button>
-                </div>
-              )}
-
-              {isExpanded && (
-                <div className="group-lists-container">
-                  {groupLists.length === 0 ? (
-                    <div className="group-empty-tip">
-                      {navigator.language.startsWith('vi') ? 'Kéo danh sách vào đây' : 'Drag here to add lists'}
-                    </div>
-                  ) : (
-                    groupLists.map(list => {
-                      const isListEditing = editingListId === list.id;
-
-                      return isListEditing ? (
-                        <div
-                          key={list.id}
-                          className={`nav-item nested-nav-item editing ${activeListId === list.id ? 'active' : ''}`}
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <List size={18} className="nav-icon" />
-                          <input
-                            type="text"
-                            className="nav-label-input"
-                            defaultValue={list.name}
-                            onBlur={(e) => handleRenameList(list.id, e.target.value)}
-                            onKeyDown={(e) => handleKeyDownList(e, list.id)}
-                            autoFocus
-                            onFocus={(e) => e.target.select()}
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                        </div>
-                      ) : (
+                    <input
+                      type="text"
+                      className="nav-label-input"
+                      defaultValue={group.name}
+                      onBlur={(e) => handleRenameGroup(group.id, e.target.value)}
+                      onKeyDown={(e) => handleKeyDownGroup(e, group.id)}
+                      autoFocus
+                      onFocus={(e) => e.target.select()}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                    <ChevronRight size={16} className="group-chevron" style={{ opacity: 0.3 }} />
+                  </div>
+                ) : (
+                  <div className="btn-group-toggle-wrapper">
+                    <button 
+                      type="button"
+                      className={`btn-group-toggle ${isDragOver ? 'drag-over' : ''}`}
+                      onClick={() => toggleGroup(group.id)}
+                      onContextMenu={(e) => handleGroupContextMenu(e, group)}
+                    >
+                      <Folder size={18} className="nav-icon" />
+                      <span className="nav-label">{group.name}</span>
+                      <div className="group-actions" onClick={(e) => e.stopPropagation()}>
                         <button
-                          key={list.id}
-                          className={`nav-item nested-nav-item ${activeListId === list.id ? 'active' : ''}`}
-                          onClick={() => handleSelect(list.id)}
-                          draggable
-                          onDragStart={(e) => handleDragStart(e, list.id)}
-                          onContextMenu={(e) => handleContextMenu(e, list)}
+                          type="button"
+                          className="btn-group-action"
+                          onClick={() => handleCreateListInGroup(group.id)}
+                          disabled={createListMutation.isPending}
+                          title={navigator.language.startsWith('vi') ? 'Thêm danh sách' : 'Add list'}
                         >
-                          <List size={18} className="nav-icon" />
-                          <span className="nav-label">{list.name}</span>
-                          {list._count?.todos ? <span className="nav-badge">{list._count.todos}</span> : null}
+                          <Plus size={14} />
                         </button>
-                      );
-                    })
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        })}
+                      </div>
+                      {isExpanded ? (
+                        <ChevronDown size={16} className="group-chevron" />
+                      ) : (
+                        <ChevronRight size={16} className="group-chevron" />
+                      )}
+                    </button>
+                  </div>
+                )}
 
-        {ungroupedLists.map(list => {
-          const isListEditing = editingListId === list.id;
+                {isExpanded && (
+                  <div className="group-lists-container">
+                    {groupLists.length === 0 ? (
+                      <div className="group-empty-tip">
+                        {navigator.language.startsWith('vi') ? 'Kéo danh sách vào đây' : 'Drag here to add lists'}
+                      </div>
+                    ) : (
+                      groupLists.map(list => {
+                        const isListEditing = editingListId === list.id;
 
-          return isListEditing ? (
-            <div
-              key={list.id}
-              className={`nav-item editing ${activeListId === list.id ? 'active' : ''}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <List size={18} className="nav-icon" />
-              <input
-                type="text"
-                className="nav-label-input"
-                defaultValue={list.name}
-                onBlur={(e) => handleRenameList(list.id, e.target.value)}
-                onKeyDown={(e) => handleKeyDownList(e, list.id)}
-                autoFocus
-                onFocus={(e) => e.target.select()}
+                        return isListEditing ? (
+                          <div
+                            key={list.id}
+                            className={`nav-item nested-nav-item editing ${activeListId === list.id ? 'active' : ''}`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <List size={18} className="nav-icon" />
+                            <input
+                              type="text"
+                              className="nav-label-input"
+                              defaultValue={list.name}
+                              onBlur={(e) => handleRenameList(list.id, e.target.value)}
+                              onKeyDown={(e) => handleKeyDownList(e, list.id)}
+                              autoFocus
+                              onFocus={(e) => e.target.select()}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </div>
+                        ) : (
+                          <button
+                            key={list.id}
+                            className={`nav-item nested-nav-item ${activeListId === list.id ? 'active' : ''}`}
+                            onClick={() => handleSelect(list.id)}
+                            draggable
+                            onDragStart={(e) => handleDragStart(e, list.id)}
+                            onContextMenu={(e) => handleContextMenu(e, list)}
+                          >
+                            <List size={18} className="nav-icon" />
+                            <span className="nav-label">{list.name}</span>
+                            {list._count?.todos ? <span className="nav-badge">{list._count.todos}</span> : null}
+                          </button>
+                        );
+                      })
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {ungroupedLists.map(list => {
+            const isListEditing = editingListId === list.id;
+
+            return isListEditing ? (
+              <div
+                key={list.id}
+                className={`nav-item editing ${activeListId === list.id ? 'active' : ''}`}
                 onClick={(e) => e.stopPropagation()}
-              />
-            </div>
-          ) : (
-            <button
-              key={list.id}
-              className={`nav-item ${activeListId === list.id ? 'active' : ''}`}
-              onClick={() => handleSelect(list.id)}
-              draggable
-              onDragStart={(e) => handleDragStart(e, list.id)}
-              onContextMenu={(e) => handleContextMenu(e, list)}
-            >
-              <List size={18} className="nav-icon" />
-              <span className="nav-label">{list.name}</span>
-              {list._count?.todos ? <span className="nav-badge">{list._count.todos}</span> : null}
-            </button>
-          );
-        })}
+              >
+                <List size={18} className="nav-icon" />
+                <input
+                  type="text"
+                  className="nav-label-input"
+                  defaultValue={list.name}
+                  onBlur={(e) => handleRenameList(list.id, e.target.value)}
+                  onKeyDown={(e) => handleKeyDownList(e, list.id)}
+                  autoFocus
+                  onFocus={(e) => e.target.select()}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              </div>
+            ) : (
+              <button
+                key={list.id}
+                className={`nav-item ${activeListId === list.id ? 'active' : ''}`}
+                onClick={() => handleSelect(list.id)}
+                draggable
+                onDragStart={(e) => handleDragStart(e, list.id)}
+                onContextMenu={(e) => handleContextMenu(e, list)}
+              >
+                <List size={18} className="nav-icon" />
+                <span className="nav-label">{list.name}</span>
+                {list._count?.todos ? <span className="nav-badge">{list._count.todos}</span> : null}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Context Menu */}
@@ -482,7 +530,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
                 <button
                   type="button"
                   className="context-menu-item"
-                  onClick={() => handleMoveListToGroup(contextMenu.listId, contextMenu.listName, contextMenu.listIcon, undefined)}
+                  onClick={() => handleMoveListToGroup(contextMenu.listId, contextMenu.listName, contextMenu.listIcon, null)}
                 >
                   <span>{navigator.language.startsWith('vi') ? 'Đưa ra khỏi nhóm' : 'Remove from group'}</span>
                 </button>
@@ -514,6 +562,40 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             <Trash2 size={14} className="context-menu-icon" />
             <span>{navigator.language.startsWith('vi') ? 'Xóa danh sách' : 'Delete list'}</span>
             <span className="context-menu-shortcut">Delete</span>
+          </button>
+        </div>
+      )}
+
+      {/* Group Context Menu */}
+      {groupContextMenu && (
+        <div 
+          className="context-menu" 
+          style={{ 
+            position: 'fixed', 
+            top: groupContextMenu.y, 
+            left: groupContextMenu.x,
+            zIndex: 1000 
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button 
+            type="button" 
+            className="context-menu-item"
+            onClick={() => handleRenameGroupAction(groupContextMenu.groupId)}
+          >
+            <Edit2 size={14} className="context-menu-icon" />
+            <span>{navigator.language.startsWith('vi') ? 'Đổi tên nhóm' : 'Rename group'}</span>
+          </button>
+
+          <div className="context-menu-divider" />
+
+          <button 
+            type="button" 
+            className="context-menu-item delete"
+            onClick={() => handleDeleteGroupAction(groupContextMenu.groupId)}
+          >
+            <Trash2 size={14} className="context-menu-icon" />
+            <span>{navigator.language.startsWith('vi') ? 'Xóa nhóm' : 'Delete group'}</span>
           </button>
         </div>
       )}
