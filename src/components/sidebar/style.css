@@ -234,6 +234,30 @@
   background-color: var(--bg-surface);
 }
 
+.footer-left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-new-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: all 150ms ease;
+}
+
+.btn-new-group:hover {
+  color: var(--primary);
+  background-color: rgba(150, 150, 150, 0.1);
+}
+
 .btn-new-list {
   display: flex;
   align-items: center;
@@ -287,3 +311,35 @@
   background-color: rgba(150, 150, 150, 0.1);
   color: var(--text-primary);
 }
+
+/* Inline Add Form Styles */
+.inline-add-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: 8px 4px;
+  background: transparent;
+  flex: 1;
+  border-bottom: 1px solid var(--primary); /* highlight the active input line */
+}
+
+.inline-add-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.inline-add-input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  width: 100%;
+  outline: none;
+  padding: 0;
+}
+
+.inline-add-input::placeholder {
+  color: var(--text-disabled);
+}
+
