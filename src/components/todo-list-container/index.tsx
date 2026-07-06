@@ -5,7 +5,7 @@ import { TodoItem } from '../todo-item';
 import { SkeletonList } from '../skeleton-list';
 import { SearchResults } from '../search-results';
 import { FilterChips } from '../filter-chips';
-import type { Todo } from '../../types/todo';
+import type { Todo, ApiResponse, PaginatedResult } from '../../types/todo';
 import type { TranslationKey } from '../../i18n/translations';
 
 interface TodoListContainerProps {
@@ -15,7 +15,7 @@ interface TodoListContainerProps {
   isListLoading: boolean;
   isListError: boolean;
   listError: Error | null;
-  todosData: any;
+  todosData?: ApiResponse<PaginatedResult<Todo>>;
   editingTodo: Todo | null;
   isMutating: boolean;
   completedCollapsed: boolean;
@@ -108,7 +108,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
               <select
                 className="input sort-select"
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e) => setSortBy(e.target.value as 'createdAt' | 'updatedAt' | 'title')}
               >
                 <option value="createdAt">{language === 'vi' ? 'Ngày tạo' : 'Created date'}</option>
                 <option value="updatedAt">{language === 'vi' ? 'Ngày cập nhật' : 'Updated date'}</option>
@@ -161,6 +161,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                       onToggleImportant={handleToggleImportant}
                       onEdit={setEditingTodo}
                       onDelete={handleDelete}
+                      disabled={isMutating}
                     />
                   ))}
                 </div>
@@ -188,6 +189,7 @@ export const TodoListContainer: React.FC<TodoListContainerProps> = ({
                         onToggleImportant={handleToggleImportant}
                         onEdit={setEditingTodo}
                         onDelete={handleDelete}
+                        disabled={isMutating}
                       />
                     ))}
                   </div>

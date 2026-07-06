@@ -42,7 +42,9 @@ export const useAppController = () => {
     if (!activeListId && systemLists.length > 0) {
       const defaultList = systemLists.find(l => l.name === 'Important') || systemLists[0];
       if (defaultList) {
-        setActiveListId(defaultList.id);
+        setTimeout(() => {
+          setActiveListId(defaultList.id);
+        }, 0);
       }
     }
   }, [activeListId, listsData]);
