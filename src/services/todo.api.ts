@@ -6,8 +6,8 @@ export const getTodos = async (query: TodoQuery) => {
   return response.data;
 };
 
-export const getStats = async () => {
-  const response = await axiosInstance.get<ApiResponse<TodoStats>>('/todos/stats');
+export const getStats = async (filters?: TodoQuery) => {
+  const response = await axiosInstance.get<ApiResponse<TodoStats>>('/todos/stats', { params: filters });
   return response.data;
 };
 

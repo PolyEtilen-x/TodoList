@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createTodo, deleteTodo, getStats, getTodos, updateTodo, globalSearch, getTodoGroups, getTodoLists, createTodoList, createTodoGroup, updateTodoList, updateTodoGroup, deleteTodoList, deleteTodoGroup } from '../services/todo.api';
-import type { Todo, TodoQuery } from '../types/todo';
+import type { Todo, TodoQuery, TodoStats, ApiResponse } from '../types/todo';
 
 export const useTodosQuery = (query: TodoQuery) => {
   return useQuery({
@@ -9,10 +9,10 @@ export const useTodosQuery = (query: TodoQuery) => {
   });
 };
 
-export const useStatsQuery = () => {
-  return useQuery({
-    queryKey: ['todos', 'stats'],
-    queryFn: getStats,
+export const useStatsQuery = (filters: TodoQuery) => {
+  return useQuery<ApiResponse<TodoStats>, Error>({
+    queryKey: ['todos', 'stats', filters],
+    queryFn: () => getStats(filters),
   });
 };
 
