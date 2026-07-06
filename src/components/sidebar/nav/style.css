@@ -1,12 +1,11 @@
+/* Search container */
 .sidebar-search {
   padding: var(--space-12) var(--space-16) var(--space-16);
 }
-
 .sidebar-search .search-bar {
   margin-bottom: 0;
   max-width: 100%;
 }
-
 .sidebar-search .search-input {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -14,27 +13,24 @@
   padding: 8px 12px 8px 36px;
   height: 36px;
 }
-
 .sidebar-search .search-icon {
   left: 10px;
   width: 16px;
   height: 16px;
 }
 
-/* Navigation List container */
+/* Nav layout */
 .sidebar-nav {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-height: 0;
 }
-
-.system-lists-container {
+.system-lists-container, .nav-group {
   display: flex;
   flex-direction: column;
   padding: 0 8px;
 }
-
 .sidebar-nav-scrollable {
   flex: 1;
   overflow-y: auto;
@@ -42,54 +38,47 @@
   flex-direction: column;
   padding-bottom: var(--space-16);
 }
-
 .sidebar-nav-scrollable::-webkit-scrollbar {
   width: 4px;
 }
-
 .sidebar-nav-scrollable::-webkit-scrollbar-thumb {
   background-color: var(--border);
   border-radius: 4px;
 }
-
-.nav-group {
-  display: flex;
-  flex-direction: column;
-  padding: 0 8px;
-}
-
 .nav-divider {
   height: 1px;
   background-color: var(--border);
   margin: var(--space-12) var(--space-16);
 }
 
-.nav-item {
+/* Base navigation elements */
+.nav-item,
+.btn-group-toggle {
   display: flex;
   align-items: center;
+  width: 100%;
   height: 44px;
-  padding: 0 var(--space-12);
+  padding: 0 var(--space-12) !important;
   background: transparent;
   border: none;
   border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background-color 150ms ease;
-  position: relative;
   color: var(--text-primary);
+  font-size: 0.9375rem;
+  font-weight: 500;
   text-align: left;
+  cursor: pointer;
+  position: relative;
   margin-bottom: 4px;
-  width: 100%;
+  transition: background-color 150ms ease;
+  user-select: none;
 }
-
-.nav-item:hover {
+.nav-item:hover,
+.btn-group-toggle:hover {
   background-color: rgba(150, 150, 150, 0.1);
 }
-
 .nav-item.active {
   background-color: rgba(150, 150, 150, 0.15);
 }
-
-/* Vertical Blue Indicator for Active State */
 .nav-item.active::before {
   content: '';
   position: absolute;
@@ -100,26 +89,20 @@
   background-color: var(--primary);
   border-radius: 0 4px 4px 0;
 }
-
 .nav-icon {
   color: var(--text-secondary);
   margin-right: var(--space-16);
   flex-shrink: 0;
 }
-
 .nav-item.active .nav-icon {
   color: var(--primary) !important;
 }
-
 .nav-label {
   flex: 1;
-  font-size: 0.9375rem;
-  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .nav-badge {
   background-color: rgba(150, 150, 150, 0.15);
   color: var(--text-secondary);
@@ -129,66 +112,32 @@
   border-radius: var(--radius-full);
   margin-left: var(--space-8);
 }
-
 .nav-item.active .nav-badge {
   background-color: rgba(0, 229, 255, 0.15);
   color: var(--primary);
 }
 
-/* Group Toggle & Nested Lists */
-.btn-group-toggle {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 44px;
-  padding: 0 var(--space-12) !important;
-  background: transparent;
-  border: none;
-  color: var(--text-primary);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  transition: var(--transition);
-  text-align: left;
-  user-select: none;
-  position: relative;
-  margin-bottom: 4px;
-}
-
-.btn-group-toggle:hover {
-  background-color: rgba(150, 150, 150, 0.1);
-}
-
+/* Group Nested Lists */
 .btn-group-toggle .group-chevron {
   margin-left: auto;
   color: var(--text-secondary);
   transition: transform 150ms ease;
   flex-shrink: 0;
 }
-
 .group-lists-container {
   display: flex;
   flex-direction: column;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-left: none !important;
-  gap: 0 !important;
 }
-
 .group-empty-tip {
   font-size: 0.75rem;
   color: var(--text-disabled);
   padding: var(--space-6) var(--space-12) var(--space-6) 28px;
   font-style: italic;
 }
-
-/* Hover group action buttons */
 .btn-group-toggle-wrapper {
   position: relative;
   width: 100%;
 }
-
 .group-actions {
   display: flex;
   align-items: center;
@@ -198,12 +147,10 @@
   pointer-events: none;
   transition: opacity 150ms ease;
 }
-
 .btn-group-toggle:hover .group-actions {
   opacity: 1;
   pointer-events: auto;
 }
-
 .btn-group-action {
   display: flex;
   align-items: center;
@@ -217,28 +164,20 @@
   cursor: pointer;
   transition: var(--transition);
 }
-
 .btn-group-action:hover {
   background-color: rgba(150, 150, 150, 0.15);
   color: var(--text-primary);
 }
-
-/* Make sure chevron behaves correctly when action is visible */
-.btn-group-toggle .group-chevron {
-  margin-left: 0;
-}
-
+.btn-group-toggle .group-chevron,
 .btn-group-toggle:hover .group-chevron {
   margin-left: 0;
 }
-
-/* Drag & Drop Visual Highlight */
 .btn-group-toggle.drag-over {
   background-color: var(--primary-glow) !important;
   box-shadow: 0 0 0 1px var(--primary) inset !important;
 }
 
-/* Inline Edit Inputs */
+/* Inputs */
 .nav-label-input {
   flex: 1;
   background: var(--bg-input);
@@ -253,26 +192,19 @@
   width: 100%;
   box-sizing: border-box;
 }
-
-.nav-item.editing {
+.nav-item.editing, .btn-group-toggle.editing {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: var(--space-6) var(--space-12);
-  background: transparent;
+  background: transparent !important;
   cursor: default;
   pointer-events: auto;
 }
-
-.btn-group-toggle.editing {
-  cursor: default;
-}
-
 .nested-nav-item {
   padding-left: 28px !important;
 }
 
-/* Context Menu (Right Click) Styles */
+/* Context Menu */
 .context-menu {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -285,7 +217,6 @@
   animation: fadeIn 100ms ease;
   user-select: none;
 }
-
 .context-menu-item {
   display: flex;
   align-items: center;
@@ -304,28 +235,22 @@
   transition: var(--transition);
   position: relative;
 }
-
 .context-menu-item:hover {
   background-color: var(--bg-hover);
 }
-
 .context-menu-item.delete {
   color: var(--danger);
 }
-
 .context-menu-item.delete:hover {
   background-color: rgba(255, 61, 90, 0.1);
 }
-
 .context-menu-icon {
   flex-shrink: 0;
   color: var(--text-secondary);
 }
-
 .context-menu-item.delete .context-menu-icon {
   color: var(--danger);
 }
-
 .context-menu-shortcut {
   margin-left: auto;
   font-size: 0.75rem;
@@ -333,23 +258,18 @@
   font-weight: 400;
   padding-left: var(--space-16);
 }
-
 .context-menu-divider {
   height: 1px;
   background-color: var(--border);
   margin: 6px 4px;
 }
-
-/* Submenu Position and Hover trigger */
 .context-menu-submenu-trigger {
   position: relative;
 }
-
 .context-submenu-arrow {
   margin-left: auto;
   color: var(--text-secondary);
 }
-
 .context-submenu {
   position: absolute;
   top: 0;
@@ -364,24 +284,11 @@
   display: none;
   flex-direction: column;
 }
-
 .context-menu-submenu-trigger:hover .context-submenu {
   display: flex;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Custom Confirmation Modal */
+/* Modals */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -395,7 +302,6 @@
   z-index: 2000;
   animation: modalFadeIn 150ms ease-out;
 }
-
 .modal-container {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
@@ -409,88 +315,63 @@
   gap: var(--space-16);
   animation: modalSlideUp 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .modal-title {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-primary);
 }
-
 .modal-message {
   margin: 0;
   font-size: 0.875rem;
   color: var(--text-secondary);
   line-height: 1.5;
 }
-
 .modal-actions {
   display: flex;
   gap: var(--space-12);
   margin-top: var(--space-8);
 }
-
-.btn-modal-delete {
-  background-color: var(--danger);
-  color: #ffffff;
+.btn-modal-delete, .btn-modal-cancel {
   padding: 8px 16px;
   border-radius: var(--radius-md);
   font-weight: 600;
   font-size: 0.875rem;
-  border: none;
   cursor: pointer;
-  transition: background-color 150ms ease;
   height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 80px;
+  transition: all 150ms ease;
 }
-
+.btn-modal-delete {
+  background-color: var(--danger);
+  color: #ffffff;
+  border: none;
+}
 .btn-modal-delete:hover {
   background-color: #dc2626;
 }
-
 .btn-modal-cancel {
   background-color: var(--bg-card);
   border: 1px solid var(--border);
   color: var(--text-primary);
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: background-color 150ms ease;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 80px;
 }
-
 .btn-modal-cancel:hover {
   background-color: var(--bg-hover);
   border-color: var(--border-hover);
 }
 
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
-
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 @keyframes modalSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(20px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
